@@ -1,0 +1,15 @@
+#! /bin/sh
+echo "This script will pack all the CONTCAR POSCAR and OUTCAR, nothing will be deleted"
+read -p "continue?(y/n)" x
+if [ "$x" == "y" -o "$x" == "Y" ]; then
+    read -p "The number of images:" n
+    for((i=0;i<=$(($n+1));i=i+1))
+    do
+    test -e ./0$i/CONTCAR &&cat ./0$i/CONTCAR >CONTCAR-0$i.vasp
+    [ -e ./0$i/POSCAR ] &&cat ./0$i/POSCAR >POSCAR-0$i.vasp
+    [ -e ./0$i/OUTCAR ] &&cp ./0$i/OUTCAR ./OUTCAR-0$i
+    done
+    tar -zcvf ./OUTCAR.tar.gz ./*.vasp ./OUTCAR*
+    rm *.vasp
+    rm *-0*
+fi

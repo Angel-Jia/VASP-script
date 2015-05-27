@@ -1,0 +1,14 @@
+#!/bin/bash
+echo ""
+if [ -e OUTCAR ]
+then
+    grep "energy  with" OUTCAR |tail -1
+else
+    for i in "$@"
+    do
+        echo "$i"
+        grep "energy  with" $i/OUTCAR |tail -1
+        echo ""
+    done
+fi
+echo ""

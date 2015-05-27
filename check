@@ -1,0 +1,18 @@
+#!/bin/bash
+echo ""
+echo "KPOINTS:"
+tail -3 KPOINTS
+echo ""
+echo "POTCAR:"
+grep "VRHF" POTCAR
+echo ""
+if [ -e POSCAR ]
+then
+    echo "POSCAR:"
+    sed -n '6,8p' POSCAR
+else
+    echo "00/POSCAR:"
+    sed -n '6,8p' 00/POSCAR
+fi
+echo ""
+echo ""

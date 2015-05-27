@@ -1,0 +1,104 @@
+#! /bin/sh
+echo ""
+echo ""
+echo "This script will pack all CONTCARs and POSCARs, and creat .gjf and movie corresponding to them"
+echo "############All CONTACRs and POSCARs in packege will be converted to cartesian file############"
+echo ""
+echo ""
+echo ""
+echo ""
+
+read -p "The number of images:" n
+echo ""
+echo "#############################  Processing  #############################"
+echo ""
+mkdir vaspfile gvfile movie
+
+for((ii=0;ii<=$(($n+1));ii=ii+1))
+do
+    if [ $ii -lt 10 ]
+    then
+        i="0"$ii
+    else
+        i=$ii
+    fi
+
+    if [ -e ./$i/CONTCAR ] 
+    then
+        cat ./$i/CONTCAR >./vaspfile/CONTCAR-$i
+        cat ./$i/CONTCAR >./gvfile/CONTCAR-$i
+        cat ./$i/CONTCAR >./movie/CONTCAR-$i
+    fi
+
+    if [ -e ./$i/POSCAR ] 
+    then
+        cat ./$i/POSCAR >./vaspfile/POSCAR-$i
+        cat ./$i/POSCAR >./gvfile/POSCAR-$i
+        cat ./$i/POSCAR >./movie/POSCAR-$i
+    fi
+done
+
+
+cd vaspfile/
+echo "vaspfile/ processing"
+dir2car.pl * > /dev/null
+tar -cf ./POSITION.tar ./*.vasp
+rm *.vasp POSCAR* CONTCAR* 2> /dev/null
+tar -xf ./POSITION.tar
+rm POSITION.tar
+cd ..
+
+cd gvfile/
+echo "gvfile/ processing"
+vas2gv.pl * > /dev/null
+tar -cf ./GVFILE.tar ./*.gjf
+rm *.gjf POSCAR* CONTCAR* 2> /dev/null
+tar -xf ./GVFILE.tar
+rm GVFILE.tar
+cd ..
+
+cd movie
+echo "movie/ processing"
+cp POSCAR-00 CONTCAR-00
+
+if [ $n -lt 9 ]
+then
+    nn=$(($n+1))
+    nn="0"$nn
+else
+    nn=$(($n+1))
+fi
+
+cp POSCAR-$nn CONTCAR-$nn
+
+for((ii=0;ii<=$(($n+1));ii=ii+1))
+do
+    if [ $ii -lt 10 ]
+    then
+        i="0"$ii
+    else
+        i=$ii 
+    fi
+
+    if [ -e POSCAR-$i ]
+    then
+    pos2xyz.pl POSCAR-$i
+    cat POSCAR-$i.xyz >>POSmovie.xyz
+    fi
+    if [ -e CONTCAR-$i ]
+    then
+    pos2xyz.pl CONTCAR-$i
+    cat CONTCAR-$i.xyz >>CONmovie.xyz
+    fi
+done
+tar -cf ./MOVIE.tar ./POSmovie.xyz ./CONmovie.xyz
+rm POSCAR* CONTCAR*
+tar -xf MOVIE.tar
+rm MOVIE.tar
+cd ..
+
+tar -zcf ./NEBINFO.tar.gz vaspfile/ gvfile/ movie/
+rm -rf movie/ vaspfile/ gvfile/
+echo ""
+echo "##############################  Finished  ##############################"
+echo ""

@@ -1,0 +1,17 @@
+#!/bin/bash
+if [ -d $1 ]
+then
+    cp $1/INCAR .
+    cp $1/KPOINTS .
+    cp $1/POTCAR .
+    for i in `ls $1`
+    do
+        if [ -x $1/$i ]
+        then
+            cp $1/$i .
+        fi
+    done
+else
+    echo "fold $1 does not exit"
+    exit
+fi

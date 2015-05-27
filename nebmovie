@@ -1,0 +1,31 @@
+#! /bin/bash
+echo ""
+echo ""
+echo "####################This script creats movie.xyz for each image####################"
+echo ""
+read -p "The nember of images:" n
+for((i=1;i<=$(($n));i=i+1))
+do
+    if [ $i -lt 10 ];
+    then
+        cd ./0$i/ &&xdat2xyz.pl XDATCAR
+        mv movie.xyz ../movie-0$i.xyz
+        cd ..
+    else
+        cd ./$i/ &&xdat2xyz.pl XDATCAR
+        mv movie.xyz ../movie-$i.xyz
+        cd ..
+    fi
+done
+echo ""
+echo "                 ####################Finished####################" 
+echo ""
+
+read -p "Combining automatically?" m
+if [ $m == "n" ]
+then
+    exit
+fi
+
+moviecombine.pl *.xyz movie.xyz 13.529 0 0
+gzip movie.xyz

@@ -1,0 +1,23 @@
+#! /bin/bash
+echo ""
+echo ""
+echo "###############This script will remove all CHG CHHCAR WAVECAR###############"
+echo ""
+echo ""
+#read -p "number of images: " n
+n=16
+for((i=0;i<=$(($n+1));i=i+1))
+do
+    if [ $i -lt 10 ];
+    then
+        [ -e ./0$i/CHG ] &&rm ./"0$i"/CHG 
+        [ -e ./0$i/CHGCAR ] &&rm ./"0$i"/CHGCAR 
+        [ -e ./0$i/WAVECAR ] &&rm ./"0$i"/WAVECAR 
+    else
+        [ -e ./$i/CHG ] &&rm ./"$i"/CHG 
+        [ -e ./$i/CHGCAR ] &&rm ./"$i"/CHGCAR 
+        [ -e ./$i/WAVECAR ] &&rm ./"$i"/WAVECAR 
+    fi
+done
+rm vasprun.xml *.xyz
+echo ""
