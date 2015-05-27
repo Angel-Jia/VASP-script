@@ -1,2 +1,2 @@
 # VASP-script
-hello world
+some useful scripts for VASP
