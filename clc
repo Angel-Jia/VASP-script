@@ -1,6 +1,0 @@
-#! /bin/sh
-echo "This script will remove all useless files"
-#read -p "continue?(y/n)" x
-#if [ "$x" == "y" -o "$x" == "Y" ]; then
-    rm CHG CHGCAR WAVECAR DOSCAR EIGENVAL OSZICAR output.* IBZKPT PCDAT nodelist vasprun.xml *.vasp *.gjf
-#fi
