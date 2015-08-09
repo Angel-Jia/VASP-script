@@ -195,18 +195,7 @@ sub write_poscar {
         print OUT $selectiveflag."\n";
     }
 #add
-    if ($coordinationflag =~ /^d/i){
-        print OUT "Direct\n";
-        for ($i=0; $i<$total_atoms; $i++) {
-            for ($j=0; $j<3; $j++) {
-                $coord = $coordinates->[$i][$j];
-                if ($coord>1) { $coord -= 1; }
-                elsif ($coord<0) { $coord += 1; }
-                printf OUT "%20.16f", $coord."   "; 
-            }
-            print OUT " ".$selective->[$i]."\n";
-        }
-    }else{
+    if ($coordinationflag =~ /^c/i){
         print OUT "Cartesian\n";   
         for ($i=0; $i<$total_atoms; $i++) {
             for ($j=0; $j<3; $j++) {
@@ -219,6 +208,17 @@ sub write_poscar {
         for ($i=0; $i<$total_atoms; $i++) {
             for ($j=0; $j<3; $j++) {
                 printf OUT "%20.16f", $coord->[$i][$j]."   ";
+            }
+            print OUT " ".$selective->[$i]."\n";
+        }
+    }else{
+        print OUT "Direct\n";
+        for ($i=0; $i<$total_atoms; $i++) {
+            for ($j=0; $j<3; $j++) {
+                $coord = $coordinates->[$i][$j];
+                if ($coord>1) { $coord -= 1; }
+                elsif ($coord<0) { $coord += 1; }
+                printf OUT "%20.16f", $coord."   "; 
             }
             print OUT " ".$selective->[$i]."\n";
         }
