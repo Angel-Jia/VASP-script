@@ -3,9 +3,11 @@ echo ""
 echo "KPOINTS:"
 tail -3 KPOINTS
 echo ""
+
 echo "POTCAR:"
 grep "VRHF" POTCAR
 echo ""
+
 if [ -e POSCAR ]
 then
     echo "POSCAR:"
@@ -17,5 +19,6 @@ then
 else
     echo "POSCAR do not exit!"
 fi
+
 echo ""
 echo ""
