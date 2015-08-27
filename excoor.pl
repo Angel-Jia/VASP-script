@@ -8,9 +8,9 @@ use warnings;
 use vars qw($dash_label $line_number $step $line $find_position);
 print "\n";
 print "\n";
-print "###This script extracts atomic coordinations and energy in each step from OUTCAR file###\n";
+print "### This script extracts atomic coordinations and energy in each step from OUTCAR file ###\n";
 print "\n";
-print "\n";
+
 #dash_labe is used to located coordinations, which is within two rows of dashes. when dash_label=2, I set find_position=1
 #find_position=1 means that we find the coordinations.
 if($ARGV[0] eq ""){
@@ -20,8 +20,8 @@ if($ARGV[0] eq ""){
     exit 1;
 }
 while($ARGV[0]){
-    my $outfile=$ARGV[0].'.pos';
-    print "Processing $ARGV[0]\n";
+    my $outfile = $ARGV[0].'.pos';
+    print "                                   Processing $ARGV[0]\n";
     open FILE, '<', $ARGV[0] or die "Cannot open file $ARGV[0]: $!";
     open OUT, '>', $outfile or die "Cannot open file $outfile: $!";
 
@@ -61,11 +61,10 @@ while($ARGV[0]){
                        $coordinate[5],$force;
         }
     }  
-    print "results have been saved in file $ARGV[0].pos\n";
     print "\n";
     shift @ARGV;
     close(FILE);
     close(OUT);
 }
-print "                  #################### Finished! ####################\n";
+print "                           --------------- Done ---------------\n";
 print "\n";

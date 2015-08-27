@@ -1,5 +1,5 @@
 #! /bin/sh
-for i in CHG CHGCAR WAVECAR DOSCAR EIGENVAL OSZICAR PCDAT vasprun.xml slurm-*
+for i in CHG CHGCAR WAVECAR DOSCAR EIGENVAL OSZICAR PCDAT vasprun.xml slurm-* vasp-gamma
 do
     for j in `find ./ -name $i`
     do

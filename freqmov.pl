@@ -11,9 +11,10 @@ use lib "$Bin";
 use Vasp;
 print "\n";
 print "\n";
-print "################This script can make animation of vibration################";
+print "################ This script makes animation of vibration ################";
 print "\n";
-print "\n";
+print "                ------------------ Done ------------------\n";
+
 
 sub writefile {
     printf OUT "%d\n", $totatoms;
@@ -62,6 +63,8 @@ $number = pop(@ARGV);
 while($ARGV[0]){
     $freq_in = shift(@ARGV);
     $freq_out = $freq_in.".xyz";
+    print "                         Processing $freq_in\n";
+
     open IN, '<', $freq_in or die "Cannot open file $freq_in: $!\n";
     open OUT, '>', $freq_out or die "Cannot open file $freq_out: $!\n";
     chomp(@freq_file = <IN>);
@@ -122,6 +125,6 @@ while($ARGV[0]){
     print "     $freq_in finished!\n";
 }
 print "\n";
-print "                ###############  Finished  ###############";
+print "                ------------------ Done ------------------\n";
 print "\n";
 print "\n";

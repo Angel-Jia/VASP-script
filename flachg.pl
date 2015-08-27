@@ -1,5 +1,4 @@
 #!/usr/bin/env perl
-#This script converts direct to cartesian
 #by sky nankai university
 #version 1.0
 use FindBin qw($Bin);
@@ -10,8 +9,9 @@ use vars qw($input $output $coo $coo1 $basis $lattice $natoms $totatoms $selecti
 
 print "\n";
 print "\n";
-print "############This script noly converts direct to cartesian############\n";
+print "############ This script changes T and F according to model file ############\n";
 print "\n";
+
 # Get the input parameters
 if($ARGV[0] eq ""){
 print "Usage: flachg.pl modelfile vaspfile \n";
@@ -34,7 +34,6 @@ $vasp_file = shift(@ARGV);
 write_carposcar($coo,$basis,$lattice,$natoms,$totatoms,
              $selectiveflag,$selective,$description,"$vasp_file",$filetype);
 
-print "    $input completed!\n";
 print "\n";
-print "########################Convertion finished!########################\n";
+print "                     --------------- Done ---------------\n";
 print "\n";

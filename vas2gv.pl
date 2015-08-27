@@ -10,13 +10,14 @@ use vars qw($input $output $coo $basis $lattice $natoms $totatoms $selectiveflag
 
 print "\n";
 print "\n";
-print "###############This script converts vasp file into gview file###############\n";
-print "             ############CONTCAR or POSCAR -> .gjf############\n";
+print "############### This script converts vasp file into gview file ###############\n";
+print "             ############ CONTCAR or POSCAR -> .gjf ############\n";
 print "\n";
+
 # Get the input parameters
-if(defined($ARGV[0]) == 0){
-    print "Usage: vas2gv.pl INPUTFILE1 INPUTFILE2 INPUTFILE3.....\n";
-    print "INPUTFILE can be POSCAR or CONTCAR and either direct ot cartesian\n";
+if(!defined($ARGV[0])){
+    print "Usage: vas2gv.pl file1 file2 file3.....\n";
+    print "file can be POSCAR or CONTCAR and either direct or cartesian\n";
     print "Please try again!\n";
     print "\n";
     print "\n";
@@ -24,12 +25,9 @@ if(defined($ARGV[0]) == 0){
 }
 
 while(defined($ARGV[0])){
-    my $m=0;
-    my $n=0;
-    my $j=0;
     $input = shift @ARGV;
     $output = $input.".gjf";
-
+    print "                             Processing $input\n";
 
     ($coo,$basis,$lattice,$natoms,$totatoms,$selectiveflag,$selective,$description,$filetype)
      = read_poscar($input);
@@ -43,17 +41,16 @@ while(defined($ARGV[0])){
     print OUT "\n";
     print OUT "0 1\n";
 
-    for($m = 0; $m < @element; $m++){
-        for($n = 0; $n < ($natoms->[$m]); $n++){
+    for(my $m = 0, my $j = 0; $m < @element; $m++){
+        for(my $n = 0; $n < ($natoms->[$m]); $n++){
             printf OUT "%2s", $element[$m];
             printf OUT "    %20.16f    %20.16f    %20.16f\n", $coo->[$j][0], $coo->[$j][1], $coo->[$j][2];
             $j++;
         }
     }
     print OUT "\n";
-    print "    $input completed!\n";
     close(OUT);
 }
 print "\n";
-print "########################Convertion finished!########################\n";
+print "                     --------------- Done ---------------\n";
 print "\n";

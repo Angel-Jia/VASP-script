@@ -10,8 +10,10 @@ use vars qw($input $output $coo $basis $lattice $natoms $totatoms $selectiveflag
 
 print "\n";
 print "\n";
-print "############This script noly converts direct to cartesian############\n";
+print "############ This script converts direct to cartesian ############\n";
+print "          ############ direct -> cartesian ############\n";
 print "\n";
+
 # Get the input parameters
 if($ARGV[0] eq ""){
 print "Usage: dir2car.pl INPUTFILE1 INPUTFILE2 INPUTFILE3.....\n";
@@ -24,15 +26,14 @@ exit 1;
 while(defined($ARGV[0])){
     $input = shift(@ARGV);
     $output = $input."-C.vasp";
-
+    print "                      Processing $input\n";
 
     ($coo,$basis,$lattice,$natoms,$totatoms,$selectiveflag,$selective,$description,$filetype)
      = read_poscar($input);
 
     write_carposcar($coo,$basis,$lattice,$natoms,$totatoms,
                  $selectiveflag,$selective,$description,"$output",$filetype);
-    print "    $input completed!\n";
 }
 print "\n";
-print "########################Convertion finished!########################\n";
+print "                   ---------- Done ----------\n";
 print "\n";

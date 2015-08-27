@@ -1,0 +1,9 @@
+#!/bin/bash
+for i in $@
+do
+    for j in `find ./ -name $i`
+    do
+        echo "$j"
+        rm $j
+    done
+done

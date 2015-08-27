@@ -3,12 +3,12 @@ use FindBin qw($Bin);
 use lib "$Bin";
 use Vasp;
 use strict;
-use vars qw($input $output $coo $basis $lattice $natoms @natoms $totatoms $selectiveflag $selective $description $filetype $coordinationflag @element $element $line_num $line @line_sp $i $j);
+use vars qw($coo $basis $lattice $natoms @natoms $totatoms $selectiveflag $selective $description $filetype $coordinationflag @element $element $line $line_num);
 
 print "\n";
 print "\n";
-print "##################This script converts .cell into POSCAR##################\n";
-print "              ############### .cell -> POSCAR###############\n";
+print "################## This script converts .cell into POSCAR ##################\n";
+print "              ############### .cell -> POSCAR ###############\n";
 print "\n";
 
 
@@ -20,7 +20,7 @@ if(!defined($ARGV[0])){
     exit 1;
 }
 
-print "     Processing...\n";
+print "                            Processing...\n";
 
 open IN, '<', $ARGV[0] or die "cannot creat file $ARGV[0]: $!\n";
 open OUT, '>', "POSCAR" or die "cannot creat file POSCAR: $!\n";
@@ -31,7 +31,7 @@ while(defined($line = <IN>)){
     chomp($line);
     $line =~ s/^\s+//;
     if($line_num >= 2 and $line_num <= 4){
-        @line_sp = split(/\s+/,$line);
+        my @line_sp = split(/\s+/,$line);
         $basis->[0][$line_num-2] = $line_sp[0];
         $basis->[1][$line_num-2] = $line_sp[1];
         $basis->[2][$line_num-2] = $line_sp[2];
@@ -42,7 +42,7 @@ while(defined($line = <IN>)){
 
     if($line_num > 7){
         last if($line =~ /^\%/);
-        @line_sp = split(/\s+/,$line);
+        my @line_sp = split(/\s+/,$line);
         if(!defined($element[0])){
             push(@element,$line_sp[0]);
             push(@natoms,1);
@@ -59,18 +59,18 @@ while(defined($line = <IN>)){
 }
 
 $lattice = "   1.00000000000000";
-for($i = 0, $totatoms = 0; $i < @natoms; $i++){
+for(my $i = 0, $totatoms = 0; $i < @natoms; $i++){
     $totatoms += $natoms[$i];
 }
 $natoms = \@natoms;
 $selectiveflag = "Selective dynamics";
 
-for($i = 1, $description = "$element[0]"; $i < @element; $i++){
+for(my $i = 1, $description = "$element[0]"; $i < @element; $i++){
     $description = "$description  $element[$i]";
 }
 
 $filetype = "vasp5";
-for($i = 0; $i < $totatoms; $i++){
+for(my $i = 0; $i < $totatoms; $i++){
     $selective ->[$i] = "  T T T";
 }
 
@@ -84,6 +84,5 @@ close(OUT);
 
 
 print "\n";
-print "\n";
-print "                  -----------------Done-----------------\n";
+print "                  ----------------- Done -----------------\n";
 print "\n";

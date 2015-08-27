@@ -3,12 +3,15 @@ echo ""
 if [ -e OUTCAR ]
 then
     grep "energy  with" OUTCAR |tail -1
-else
+elif [ "$1" != "" ]
+then
     for i in "$@"
     do
         echo "$i"
         grep "energy  with" $i/OUTCAR |tail -1
         echo ""
     done
+else
+    echo "Can not find OUTCAR"
 fi
 echo ""

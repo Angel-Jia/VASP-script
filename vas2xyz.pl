@@ -10,9 +10,11 @@ use vars qw($input $output $coo $basis $lattice $natoms $totatoms $selectiveflag
 
 print "\n";
 print "\n";
-print "###############This script converts vasp file into .xyz file###############\n";
-print "             ############CONTCAR or POSCAR -> .xyz############\n";
+print "############### This script converts vasp file into .xyz file ###############\n";
+print "             ############ CONTCAR or POSCAR -> .xyz ############\n";
 print "\n";
+
+
 # Get the input parameters
 if(defined($ARGV[0]) == 0){
     print "Usage: vas2xyz.pl INPUTFILE1 INPUTFILE2 INPUTFILE3.....\n";
@@ -23,13 +25,13 @@ if(defined($ARGV[0]) == 0){
     exit 1;
 }
 
-while(defined($ARGV[0])){
+while($ARGV[0]){
     my $m=0;
     my $n=0;
     my $j=0;
     $input = shift @ARGV;
     $output = $input.".xyz";
-
+    print "                            Processing $output\n";
 
     ($coo,$basis,$lattice,$natoms,$totatoms,$selectiveflag,$selective,$description,$filetype)
      = read_poscar($input);
@@ -50,9 +52,8 @@ while(defined($ARGV[0])){
         }
     }
     print OUT "\n";
-    print "    $input completed!\n";
     close(OUT);
 }
 print "\n";
-print "########################Convertion finished!########################\n";
+print "              --------------------- DONE ---------------------\n";
 print "\n";
