@@ -5,13 +5,19 @@ then
     grep "energy  with" OUTCAR |tail -1
 elif [ "$1" != "" ]
 then
-    for i in "$@"
+    for i in $@
     do
-        echo "$i"
-        grep "energy  with" $i/OUTCAR |tail -1
-        echo ""
+        for j in `find $i -name OUTCAR`
+        do
+            echo "$j"
+            grep "energy  with" $j |tail -1
+        done
     done
 else
-    echo "Can not find OUTCAR"
+    for i in `find ./ -name OUTCAR`
+    do
+        echo "$i"
+        grep "energy  with" $i |tail -1
+    done
 fi
 echo ""
