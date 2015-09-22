@@ -82,15 +82,16 @@ do
 
     if [ -e POSCAR-$i ]
     then
-    pos2xyz.pl POSCAR-$i
+    vas2xyz.pl POSCAR-$i >/dev/null
     cat POSCAR-$i.xyz >>POSmovie.xyz
     fi
     if [ -e CONTCAR-$i ]
     then
-    pos2xyz.pl CONTCAR-$i
+    vas2xyz.pl CONTCAR-$i >/dev/null
     cat CONTCAR-$i.xyz >>CONmovie.xyz
     fi
 done
+sed -i '/^$/d' *.xyz
 tar -cf ./MOVIE.tar ./POSmovie.xyz ./CONmovie.xyz
 rm POSCAR* CONTCAR*
 tar -xf MOVIE.tar

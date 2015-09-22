@@ -1,0 +1,15 @@
+#!/bin/bash
+node=`grep "node=" $1 |sed 's/\s*//g' |cut -c 6-`
+res=$((${node}%24))
+if [ -z $node ];then
+    echo ""
+    echo "node has not been defined! Check your script $1."
+    echo ""
+    exit
+elif [ "$res" -ne "0" ];then
+    echo ""
+    echo "you defined node=$node, which is wrong. Please check again!"
+    echo ""
+    exit
+fi
+yhbatch -n $node $1
