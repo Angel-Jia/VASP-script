@@ -1,0 +1,25 @@
+#!/bin/bash
+echo ""
+echo "This script clear all file but POSCAR INCAR KPOINTS POTCAR and executable file"
+read -p "Are sure to continue?[Y/N]:" flag
+echo ""
+if [ "$flag" != "Y" -a "$flag" != "y" ];then
+    exit
+fi
+
+list="POSCAR POTCAR INCAR KPOINTS ""$@"
+
+for i in `ls -1`
+do
+    for j in $list
+    do
+        if [[ $i =~ ${j}$ ]];then
+            continue 2
+        elif [ -x $i ];then
+            continue 2
+        fi
+    done
+    rm $i
+done
+echo "                         ---------- Done ----------"
+echo ""
