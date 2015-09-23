@@ -14,15 +14,8 @@ echo "#############################  Processing  #############################"
 echo ""
 mkdir vaspfile gvfile movie
 
-for((ii=0;ii<=$(($n+1));ii=ii+1))
+for i in `seq -f '%02g' 0 $(($n+1))`
 do
-    if [ $ii -lt 10 ]
-    then
-        i="0"$ii
-    else
-        i=$ii
-    fi
-
     if [ -e ./$i/CONTCAR ] 
     then
         cat ./$i/CONTCAR >./vaspfile/CONTCAR-$i
@@ -37,7 +30,6 @@ do
         cat ./$i/POSCAR >./movie/POSCAR-$i
     fi
 done
-
 
 cd vaspfile/
 echo "vaspfile/ processing"
@@ -61,25 +53,12 @@ cd movie
 echo "movie/ processing"
 cp POSCAR-00 CONTCAR-00
 
-if [ $n -lt 9 ]
-then
-    nn=$(($n+1))
-    nn="0"$nn
-else
-    nn=$(($n+1))
-fi
+nn=`seq -f '%02g' 1 $n |tail -1`
 
 cp POSCAR-$nn CONTCAR-$nn
 
-for((ii=0;ii<=$(($n+1));ii=ii+1))
+for i in `seq -f '%02g' 0 $(($n+1))`
 do
-    if [ $ii -lt 10 ]
-    then
-        i="0"$ii
-    else
-        i=$ii 
-    fi
-
     if [ -e POSCAR-$i ]
     then
     vas2xyz.pl POSCAR-$i >/dev/null
@@ -101,5 +80,5 @@ cd ..
 tar -zcf ./NEBINFO.tar.gz vaspfile/ gvfile/ movie/
 rm -rf movie/ vaspfile/ gvfile/
 echo ""
-echo "##############################  Finished  ##############################"
+echo "                 ---------------  Done  ---------------"
 echo ""
