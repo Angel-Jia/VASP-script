@@ -9,12 +9,12 @@ use FindBin qw($Bin);
 use lib "$Bin";
 print "\n";
 print "\n";
-print "################This script makes MODECAR file for vasp vtst tool################";
+print "################ This script makes MODECAR file for vasp vtst tool ################";
 print "\n";
 print "\n";
 
 
-if($ARGV[0] eq "" or @ARGV != 2){
+if(!defined($ARGV[0])  or @ARGV != 2){
     print "Usage: freq.pl freqfile factor....\n";
     print "Please try again!\n";
     print "\n";
@@ -23,7 +23,7 @@ if($ARGV[0] eq "" or @ARGV != 2){
 
 $freqfile = shift(@ARGV);
 $factor = pop(@ARGV);
-print "      processing....\n";
+print "                             processing....\n";
 
 open IN, '<', $freqfile or die "Cannot open file $freqfile: $!\n";
 open OUT, '>', MODECAR or die "Cannot creat file MODECAR: $!\n";
@@ -46,6 +46,8 @@ while($freq_file[$index] =~ /[0-9]/){
                $line[4]*$factor, $line[5]*$factor;
     $index++;
 }
-print "                         ###########DONE!############\n";
+
+print "\n";
+print "                         ----------- Done -----------\n";
 print "\n";
 print "\n";
