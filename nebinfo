@@ -2,9 +2,7 @@
 echo ""
 echo ""
 echo "This script will pack all CONTCARs and POSCARs, and creat .gjf and movie corresponding to them"
-echo "############All CONTACRs and POSCARs in packege will be converted to cartesian file############"
-echo ""
-echo ""
+echo "############ All CONTACRs and POSCARs in packege will be converted to cartesian file ############"
 echo ""
 echo ""
 
@@ -32,7 +30,7 @@ do
 done
 
 cd vaspfile/
-echo "vaspfile/ processing"
+echo "                           vaspfile/ processing"
 dir2car.pl * > /dev/null
 tar -cf ./POSITION.tar ./*.vasp
 rm *.vasp POSCAR* CONTCAR* 2> /dev/null
@@ -41,7 +39,7 @@ rm POSITION.tar
 cd ..
 
 cd gvfile/
-echo "gvfile/ processing"
+echo "                             gvfile/ processing"
 vas2gv.pl * > /dev/null
 tar -cf ./GVFILE.tar ./*.gjf
 rm *.gjf POSCAR* CONTCAR* 2> /dev/null
@@ -50,7 +48,7 @@ rm GVFILE.tar
 cd ..
 
 cd movie
-echo "movie/ processing"
+echo "                              movie/ processing"
 cp POSCAR-00 CONTCAR-00
 
 nn=`seq -f '%02g' 1 $n |tail -1`
