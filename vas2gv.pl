@@ -45,7 +45,7 @@ while(defined($ARGV[0])){
     for(my $m = 0, my $j = 0; $m < @element; $m++){
         for(my $n = 0; $n < ($natoms->[$m]); $n++){
             printf OUT "%2s", $element[$m];
-            printf OUT "    %20.12f    %20.12f    %20.12f\n", $coo->[$j][0], $coo->[$j][1], $coo->[$j][2];
+            printf OUT "    %20.16f    %20.16f    %20.16f\n", $coo->[$j][0], $coo->[$j][1], $coo->[$j][2];
             $j++;
         }
     }
