@@ -1,5 +1,6 @@
 #!/bin/env perl
 use strict;
+use warnings;
 use vars qw($num $coor $c_coor $line);
 use Math::Trig;
 

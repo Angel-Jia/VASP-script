@@ -6,6 +6,7 @@ use FindBin qw($Bin);
 use lib "$Bin";
 use Vasp;
 use strict;
+use warnings;
 use vars qw($input $output $coo $basis $lattice $natoms $totatoms $selectiveflag $selective $description $filetype);
 
 print "\n";

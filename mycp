@@ -1,0 +1,6 @@
+#!/bin/bash
+cp $1/CONTCAR ./POSCAR
+dir2car.pl POSCAR
+mv POSCAR-C.vasp POSCAR
+vas2gv.pl POSCAR
+cpfile $1

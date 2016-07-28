@@ -5,11 +5,8 @@
 #version 1.0
 
 
-use 5.010;
 use strict;
 use warnings;
-use FindBin qw($Bin);
-use lib "$Bin";
 use vars qw($steps $steps_count $images $foldercount $foldername $ENER $DIST $TANG $FORC @energy 
             @distance_prev @distance_next @angle @tangentforce @force &read_file);
 
@@ -20,7 +17,7 @@ print "\n";
 print "\n";
 
 
-if($ARGV[0] eq ""){
+if(!defined($ARGV[0])){
     print "Usage: vtstnebforce.pl images \n";
     print "Please try again!\n";
     print "\n";

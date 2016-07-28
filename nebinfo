@@ -51,7 +51,7 @@ cd movie
 echo "                              movie/ processing"
 cp POSCAR-00 CONTCAR-00
 
-nn=`seq -f '%02g' 1 $n |tail -1`
+nn=`seq -f '%02g' 1 $(($n+1)) |tail -1`
 
 cp POSCAR-$nn CONTCAR-$nn
 

@@ -3,6 +3,7 @@ use FindBin qw($Bin);
 use lib "$Bin";
 use Vasp;
 use strict;
+use warnings;
 use Math::Trig;
 use vars qw($input $output $coo $basis $lattice $natoms $totatoms $selectiveflag $selective $description $filetype @element $element);
 
@@ -22,14 +23,14 @@ if(!defined($ARGV[0])){
 }
 
 #product of two vectors
-sub dot{
+sub dot {
     my $v1 = shift;
     my $v2 = shift;
-    return $v1->[0]*$v2->[0]+$v1->[1]*$v2->[1]+$v1->[2]*$v2->[2];
+    return $v1->[0]*$v2->[0]+$v1->[1]*$v2->[1]+$v1->[2]*$v2->[2]
 }
 
 #angle between tow vectors
-sub angle{
+sub angle {
     my $v1 = shift;
     my $v2 = shift;
     return rad2deg(acos(dot($v1,$v2)/(sqrt(dot($v1,$v1))*sqrt(dot($v2,$v2)))));

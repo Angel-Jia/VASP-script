@@ -7,7 +7,7 @@ print "\n";
 print "\n";
 print "###############This script merges all input .xyz file###############\n";
 print "\n";
-if($ARGV[0] eq ""){
+if(!defined($ARGV[0])){
     print "Usage: moviecombine.pl file1 file2 file3 ..... fileN OUTPUT X Y Z\n";
     print "The file must be standard .xyz file\n";
     print "Please try again!\n";
@@ -23,7 +23,7 @@ open OUT, '>', $filename or die "Cannot open file $filename: $!\n";
 for(my $i = 0; $i < @ARGV; $i++){
     open IN, '<', $ARGV[$i] or die "Cannot open file $ARGV[$i]: $!\n";
     chomp(@line = <IN>);
-    push(@file,[@line]);
+    push(@file, [@line]);
     close(IN);
 }
 

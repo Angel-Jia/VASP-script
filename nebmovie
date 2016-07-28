@@ -20,6 +20,6 @@ if [ -z $3 ];then
     exit
 fi
 
-moviecombine.pl *.xyz movie.xyz 13.686925 0 0
+moviecombine.pl *.xyz movie.xyz $@
 gzip movie.xyz
 rm *.xyz

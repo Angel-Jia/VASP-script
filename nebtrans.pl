@@ -3,7 +3,6 @@
 #by sky,Energy&Environmental Catalysis Research Group, Nankai University, Tianjin
 #version 1.0
 
-use 5.010;
 use strict;
 use warnings;
 use FindBin qw($Bin);
@@ -18,7 +17,7 @@ print "############### Replacing images with gvfile ###############\n";
 print "\n";
 
 
-if($ARGV[0] eq "" or @ARGV < 2){
+if(!defined($ARGV[0]) or @ARGV < 2){
     print "Usage: nebtrans.pl POSCAR gvfile1 gvfile2 .... \n";
     print "Please try again!\n";
     print "\n";

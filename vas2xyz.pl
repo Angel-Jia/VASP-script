@@ -6,6 +6,7 @@ use FindBin qw($Bin);
 use lib "$Bin";
 use Vasp;
 use strict;
+use warnings;
 use vars qw($input $output $coo $basis $lattice $natoms $totatoms $selectiveflag $selective $description $filetype @element $element);
 
 print "\n";
@@ -16,7 +17,7 @@ print "\n";
 
 
 # Get the input parameters
-if(defined($ARGV[0]) == 0){
+if(!defined($ARGV[0])){
     print "Usage: vas2xyz.pl INPUTFILE1 INPUTFILE2 INPUTFILE3.....\n";
     print "INPUTFILE can be POSCAR or CONTCAR and either direct ot cartesian\n";
     print "Please try again!\n";
@@ -25,7 +26,7 @@ if(defined($ARGV[0]) == 0){
     exit 1;
 }
 
-while($ARGV[0]){
+while(defined($ARGV[0])){
     my $m=0;
     my $n=0;
     my $j=0;

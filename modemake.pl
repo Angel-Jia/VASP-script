@@ -4,9 +4,7 @@
 #version 1.0
 #date 2015-3-12
 
-use 5.010;
-use FindBin qw($Bin);
-use lib "$Bin";
+use warnings;
 print "\n";
 print "\n";
 print "################ This script makes MODECAR file for vasp vtst tool ################";
