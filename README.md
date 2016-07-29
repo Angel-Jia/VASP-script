@@ -108,7 +108,7 @@ freqfile文件可用下列方法提取：
 ```
 grep "20 f/i" OUTCAR -A 20 >freq20
 ```
--A 20是输出查找到的信息以及其后20行，命令的具体含义请自行百度。也可以自己打开OUTCAR，找到所需信息直接存为文本格式。
+`-A 20`是输出查找到的信息以及其后20行，命令的具体含义请自行百度。也可以自己打开OUTCAR，找到所需信息直接存为文本格式。
 
 -----
 
@@ -134,13 +134,6 @@ modemake.pl freqfile 0.5
 #### moviecombine.pl
 用法：
 ```
-moviecombine.pl
-```
-----
-
-#### nebinfo
-用法：
-```
 moviecombine.pl file1 file2 file3 ..... fileN output X Y Z
 ```
 用于把多个xdat2xyz.pl生成的movie.xyz文件拼接到一起，可在NEB计算中实现多个镜像点按顺序排列的动画，方便找出过渡态。file1 file2 ....是.xyz文件，output是输出文件，可以VMD打开。X、Y、Z是设置偏移量。
@@ -152,6 +145,17 @@ moviecombine.pl file1.xyz file2.xyz file3.xyz out.xyz 2.0 0.0 0.0
 `file2.xyz`中的所有原子坐标将会加上(1*X,1*Y,1*Z),即统一在X轴方向加2;
 `file3.xyz`中的所有原子坐标将会加上(2*X,2*Y,2*Z),即统一在X轴方向加4;
 最后生成的`out.xyz`文件中，3个images将按照X轴的方向进行排列。
+----
+
+#### nebinfo
+用法：
+```
+nebinfo
+```
+生成压缩包`NEBINFO.tar.gz`，其中包含三个文件夹`vaspfile`、`gvfile`、`movie`
+`vaspfile` 包含每个像点的POSCAR和CONTCAR文件；
+`gvfile` 包含每个像点的POSCAR和CONTCAR的gjf文件；
+`movie` 包含了动画文件，把每个像点从起始构型到最终构型的POSCAR和CONTACR分别做成动画，用于计算前的构型检查；
 
 ----
 
