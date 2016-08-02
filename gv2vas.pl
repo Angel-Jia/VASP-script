@@ -93,7 +93,7 @@ sub read_gvfile {
         for(my $j = 0; $j < 3; $j++){
             $coo->[$index - $begin_line][$j] = $tmp[$j + 1];
         }
-    $index++;
+        $index++;
     }
 
     $totatoms = 0;
