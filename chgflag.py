@@ -1,4 +1,4 @@
-# -*- coding:utf-8 -*-
+#!/bin/env python
 
 import sys
 import re
