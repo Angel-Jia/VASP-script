@@ -13,3 +13,4 @@ elif [ "$res" -ne "0" ];then
     exit
 fi
 yhbatch -n $node $1
+recent_jobs.sh
