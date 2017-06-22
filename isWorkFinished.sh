@@ -2,7 +2,7 @@
 echo ""
 if [ -e output ]
 then
-  result=`grep "reached required accuracy" output`
+  result=`tail -20 output |grep "reached required accuracy"`
   if [ "$result" != "" ]
   then
     echo "YES"
@@ -18,7 +18,7 @@ then
     for j in `find $i -name output |sort`
     do
       echo "$j"
-      result=`grep "reached required accuracy" $j`
+      result=`tail -20 $j |grep "reached required accuracy"`
       if [ "$result" != "" ]
       then
         echo "YES"
@@ -33,7 +33,7 @@ else
   for i in `find ./ -name output| sort`
   do
     echo "$i"
-    result=`grep "reached required accuracy" $i`
+    result=`tail -20 $i |grep "reached required accuracy"`
     if [ "$result" != "" ]
     then
       echo "YES"

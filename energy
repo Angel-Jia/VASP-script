@@ -2,7 +2,7 @@
 echo ""
 if [ -e OUTCAR ]
 then
-    tail -200 OUTCAR |grep "energy  with" OUTCAR |tail -1
+    tac OUTCAR |grep -m 1 "energy  with"
 elif [ "$1" != "" ]
 then
     for i in $@
@@ -10,14 +10,14 @@ then
         for j in `find $i -name OUTCAR |sort`
         do
             echo "$j"
-            tail -200 $j |grep "energy  with" $j |tail -1
+            tac $j |grep -m 1 "energy  with"
         done
     done
 else
     for i in `find ./ -name OUTCAR |sort`
     do
         echo "$i"
-        tail -200 $i |grep "energy  with" $i |tail -1
+        tac $i |grep -m 1 "energy  with"
     done
 fi
 echo ""
