@@ -59,13 +59,11 @@ while sys.argv[i] != flag:
 
 file_name = sys.argv[-1]
 output_file_name = file_name + '.ed'
-with open(file_name) as file_input, \
-        open(output_file_name, 'w') as file_output:
-    lines = file_input.readlines()
-    lines = process(lines)
-    file_output.writelines(lines)
-    for temp in lines:
-        print str.rstrip(temp)
+with open(file_name) as file_input:
+        with open(output_file_name, 'w') as file_output:
+            lines = file_input.readlines()
+            lines = process(lines)
+            file_output.writelines(lines)
 
 print "\n"
 print "---------------Done---------------"
