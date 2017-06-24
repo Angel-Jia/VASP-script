@@ -38,8 +38,11 @@ def process(lines):
 
 
 if len(sys.argv) != 3 and len(sys.argv) != 4:
-    print "usage: chgflag line_number(xx, xx-xx, split with ',') flag(T or F) file_name"
-    print "Please try again"
+    print "\n"
+    print "usage: chgflagat.py line1,line2 T/F vaspfile"
+    print "line_number can be pure number or number in the form of number1-number2"
+    print "try again"
+    print "\n"
     exit(0)
 
 
@@ -55,7 +58,7 @@ while sys.argv[i] != flag:
     i += 1
 
 file_name = sys.argv[-1]
-output_file_name = 'test1'
+output_file_name = file_name + '.ed'
 with open(file_name) as file_input, \
         open(output_file_name, 'w') as file_output:
     lines = file_input.readlines()
@@ -64,7 +67,9 @@ with open(file_name) as file_input, \
     for temp in lines:
         print str.rstrip(temp)
 
-
+print "\n"
+print "---------------Done---------------"
+print "\n"
 
 
 
