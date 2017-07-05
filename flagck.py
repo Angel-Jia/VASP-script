@@ -15,8 +15,12 @@ print "Atom_id                      Content"
 print "------------------------------------------"
 for i in xrange(9, len(content)):
     temp = pattern.split(content[i].strip())
+    length = len(temp)
 
-    if len(temp) != 6:
+    if length == 1:
+        exit(0)
+
+    if length != 6:
         print "-----------"
         print "%4d:    %s" % (i - 8, content[i].strip())
         print "-----------"
