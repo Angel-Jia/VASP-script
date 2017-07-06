@@ -2,28 +2,18 @@
 
 import re
 import os
+from VASP import read_total_atoms
+from VASP import grep_OUTCAR
 
 print ""
 print "    --------------------Processing--------------------"
 print ""
-space = re.compile(r'\s+')
-atoms = space.split(os.popen("sed -n '7p' POSCAR").read().strip())
 
-if re.search(r'[a-z]', atoms[0]) is not None:
-    print "POSCAR: No such file or incorrect"
-    exit(0)
-
-atom_num = 0
-for i in atoms:
-    atom_num += int(i)
+atom_num = read_total_atoms()
 atom_num += 2
 
 string = "grep \"f/i\" OUTCAR -A %d" % atom_num
-content = os.popen(string).readlines()
-
-if re.search(r'No such file or directory', content[0]) is not None:
-    print "OUTCAT: No such file"
-    exit(0)
+content = grep_OUTCAR(string)
 
 pattern = re.compile("([0-9]+)\s+f/i")
 content_length = len(content)
