@@ -1,28 +1,40 @@
 import re
-import os
+import subprocess
 
 
 def read_total_atoms():
-    space = re.compile(r'\s+')
-    atoms = space.split(os.system("sed -n '7p' POSCAR").read().strip())
+    pipe = subprocess.Popen("sed -n '7p' POSCAR", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    (content, error) = (pipe.stdout.read().strip(), pipe.stderr.read())
+    if content != "":
+        space = re.compile(r'\s+')
+        content = space.split(content)
+        number = 0
+        for num in content:
+            number += int(num)
+        return number
 
-    if re.search(r'[^0-9]', atoms[0]) is not None:
+    if error != "":
+        print ""
         print "POSCAR: No such file or incorrect"
         number = raw_input("please input the total number of atoms:")
         number = number.strip()
-        if number == "" or number == re.search(r'[^0-9]') is not None:
+        if number == "" or re.search(r'[^0-9]', number) is not None:
+            print ""
             print "incorrect number!"
+            print ""
             exit(0)
         return int(number)
-    number = 0
-    for num in atoms:
-        number += int(num)
-    return number
+
 
 
 def grep_OUTCAR(command):
-    content = os.popen(command).readlines()
-    if re.search(r'No such file', content[0]) is not None:
+    pipe = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    (content, error) = (pipe.stdout.readlines(), pipe.stderr.read())
+    if content[0] != "":
+        return content
+
+    if error != "":
+        print ""
         print "POSCAR: No such file"
+        print ""
         exit(0)
-    return content
