@@ -30,7 +30,7 @@ def read_total_atoms():
 def grep_OUTCAR(command):
     pipe = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (content, error) = (pipe.stdout.readlines(), pipe.stderr.read())
-    if not content:
+    if content:
         return content
 
     if error != "":
@@ -38,3 +38,4 @@ def grep_OUTCAR(command):
         print "POSCAR: No such file"
         print ""
         exit(0)
+    return []
