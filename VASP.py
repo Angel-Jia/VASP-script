@@ -30,7 +30,7 @@ def read_total_atoms():
 def grep_OUTCAR(command):
     pipe = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (content, error) = (pipe.stdout.readlines(), pipe.stderr.read())
-    if content[0] != "":
+    if not content:
         return content
 
     if error != "":

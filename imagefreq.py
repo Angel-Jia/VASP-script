@@ -1,7 +1,6 @@
 #!/bin/env python
 
 import re
-import os
 from VASP import read_total_atoms
 from VASP import grep_OUTCAR
 
