@@ -1,18 +1,28 @@
 #!/bin/bash
-if [ -d $1 ]
-then
-    cp $1/INCAR .
-    cp $1/KPOINTS .
-    cp $1/POTCAR .
-    cp $1/vdw_kernel.bindat .
-    for i in `ls $1`
-    do
-        if [ -x $1/$i ]
-        then
-            cp $1/$i .
-        fi
-    done
-else
-    echo "fold $1 does not exit"
+if [ $1 = "-a" ];then
+  if [ -d $2 ];then
+    cp $2/POSCAR .
+    dir=$2
+  else
+    echo "fold $2 does not exit"
     exit
+  fi
+elif [ -d $1 ];then
+  dir=$1
+else
+  echo "fold $dir does not exit"
+  exit
 fi
+
+cp $dir/INCAR .
+cp $dir/KPOINTS .
+cp $dir/POTCAR .
+if [ -f $dir/vdw_kernel.bindat ];then
+  cp $dir/vdw_kernel.bindat .
+fi
+for i in `ls $dir`
+do
+  if [ -x $dir/$i ];then
+    cp $dir/$i .
+  fi
+done
