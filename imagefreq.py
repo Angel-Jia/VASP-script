@@ -2,7 +2,7 @@
 
 import re
 from VASP import read_total_atoms
-from VASP import grep_OUTCAR
+from VASP import grep_outcar
 
 print ""
 print "    --------------------Processing--------------------"
@@ -12,7 +12,7 @@ atom_num = read_total_atoms()
 atom_num += 2
 
 string = "grep \"f/i\" OUTCAR -A %d" % atom_num
-content = grep_OUTCAR(string)
+content = grep_outcar(string)
 
 pattern = re.compile("([0-9]+)\s+f/i")
 content_length = len(content)

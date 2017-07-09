@@ -93,7 +93,7 @@ def read_poscar(file_name):
 
 
 def write_poscar(file_name, lattice, basis, elements, num_atoms, selectiveflag, coordinate_type, coordinates, selective):
-    with open(file_name) as output_file:
+    with open(file_name, 'w') as output_file:
         description = ""
         for atom in elements:
             description += "%s  " % atom
@@ -113,8 +113,13 @@ def write_poscar(file_name, lattice, basis, elements, num_atoms, selectiveflag, 
         if re.search(r'^[Dd]', coordinate_type):
             coordinates = kardir(basis, coordinates)
 
+        # keeping dimension the same
+        if len(coordinates) - len(selective) > 0:
+            for i in xrange(len(selective), len(coordinates)):
+                selective.append(['', '', ''])
+
         for i in xrange(0, len(coordinates)):
-            output_file.write("%16.10f  %16.10f  %16.10f %s %s %s" % (coordinates[i][0], coordinates[i][1], coordinates[i][2],
+            output_file.write("%16.10f  %16.10f  %16.10f %s %s %s\n" % (coordinates[i][0], coordinates[i][1], coordinates[i][2],
                                                                       selective[i][0], selective[i][1], selective[i][2]))
 
 

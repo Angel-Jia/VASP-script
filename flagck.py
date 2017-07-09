@@ -3,7 +3,6 @@
 import re
 
 file_name = 'POSCAR'
-
 with open(file_name) as input_file:
     content = input_file.readlines()
 
@@ -15,14 +14,13 @@ print "Atom_id                      Content"
 print "------------------------------------------"
 for i in xrange(9, len(content)):
     temp = pattern.split(content[i].strip())
-    length = len(temp)
 
-    if length == 1:
+    if len(temp) == 1:
         exit(0)
 
-    if length != 6:
+    if len(temp) != 6:
         print "-----------"
-        print "%4d:    %s" % (i - 8, content[i].strip())
+        print "%4d:    %s" % (i - 8, content[i].rstrip())
         print "-----------"
         continue
 
@@ -36,8 +34,8 @@ for i in xrange(9, len(content)):
         continue
     else:
         pre_flag = flag
-        print "%4d:    %s" % (i - 9, content[i - 1].strip())
-        print "%4d:    %s" % (i - 8, content[i].strip())
+        print "%4d:    %s" % (i - 9, content[i - 1].rstrip())
+        print "%4d:    %s" % (i - 8, content[i].rstrip())
         print "-----------"
 
 print ""
