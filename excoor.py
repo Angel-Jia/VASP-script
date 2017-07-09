@@ -5,14 +5,14 @@ import math
 import sys
 import os
 from VASP import read_total_atoms
-from VASP import grep_OUTCAR
+from VASP import grep_outcar
 
 
 print ""
 number_of_atoms = read_total_atoms()
 
 string = "grep \"POSITION\" -A %d OUTCAR" % (int(number_of_atoms) + 15)
-content = grep_OUTCAR(string)
+content = grep_outcar(string)
 
 space = re.compile(r'\s+')
 position = re.compile(r'POSITION')
