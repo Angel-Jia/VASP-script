@@ -3,6 +3,8 @@
 import sys
 import VASP
 import re
+
+
 pos1 = [[  8.52663112, 14.79337948, 14.52301881],
       [ 16.47997580, 14.79343097, 14.51908835],
       [ 11.14789630, 14.85687226, 14.51622011],
@@ -143,13 +145,13 @@ with open(sys.argv[1]) as IN:
         gjfcoord.append([float(line[1]), float(line[2]), float(line[3]), line[0]])
 
     coor = []
+    elements = elements[:1]
+    num_atoms = num_atoms[:1]
     prev_element = ''
-    elements = [elements[0]]
-    num_atoms = [num_atoms[0]]
     for i in xrange(c, d):
-        if gjfcoord[3] != prev_element:
-            elements.append(gjfcoord[3])
-            prev_element = gjfcoord[3]
+        if gjfcoord[i][3] != prev_element:
+            elements.append(gjfcoord[i][3])
+            prev_element = gjfcoord[i][3]
             num_atoms.append(1)
         else:
             num_atoms[-1] += 1

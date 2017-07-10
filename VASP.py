@@ -83,7 +83,10 @@ def read_poscar(file_name):
             for i in xrange(start, end):
                 line = space.split(content[i].strip())
                 coordinates.append([float(line[0]), float(line[1]), float(line[2])])
-                selective.append([line[3], line[4], line[5]])
+                if len(line) == 6:
+                    selective.append([line[3], line[4], line[5]])
+                else:
+                    selective.append(['', '', ''])
 
     if re.search(r'^[Cc]', coordinate_type) is None:
         coordinate_type = 'Cartesian'
