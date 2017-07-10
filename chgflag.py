@@ -2,45 +2,14 @@
 
 import sys
 import re
-
-
-def process(lines):
-    space = re.compile(r'\s+')
-    base = 8
-    length = len(lines)
-    if line_edit == '':
-        i = 1
-        while i + base < length:
-            line = space.split(str.strip(lines[i + base]))
-            lines[i + base] = " %20.16f  %20.16f  %20.16f %s %s %s\n" %\
-                              (float(line[0]), float(line[1]), float(line[2]), flag, flag, flag)
-            i += 1
-        return lines
-    else:
-        lines_edit = line_edit.replace(' ', '').split(',')
-        for line_number in lines_edit:
-            line_numbers = line_number.split('-')
-            if len(line_numbers) == 1:
-                i = int(line_numbers[0])
-                line = space.split(str.strip(lines[i + base]))
-                lines[i + base] = " %20.16f  %20.16f  %20.16f %s %s %s\n" %\
-                                  (float(line[0]), float(line[1]), float(line[2]), flag, flag, flag)
-            else:
-                if int(line_numbers[0]) > int(line_numbers[1]):
-                    print "error: edit lines are wrong  %s-%s" % (line_numbers[0], line_numbers[1])
-                    exit(1)
-
-                for i in xrange(int(line_numbers[0]), int(line_numbers[1]) + 1):
-                    line = space.split(str.strip(lines[i + base]))
-                    lines[i + base] = " %20.16f  %20.16f  %20.16f %s %s %s\n" %\
-                                      (float(line[0]), float(line[1]), float(line[2]), flag, flag, flag)
-        return lines
+from VASP import read_poscar
+from VASP import write_poscar
 
 
 if len(sys.argv) != 3 and len(sys.argv) != 4:
     print "\n"
-    print "usage: chgflagat.py line1,line2 T/F vaspfile"
-    print "line_number can be pure number or number in the form of number1-number2"
+    print "usage: chgflagat.py line1,line2,.... T/F vaspfile"
+    print "the format of line1,line2,... can be either x or x-x"
     print "try again"
     print "\n"
     exit(0)
@@ -51,19 +20,31 @@ if flag != 'T' and flag != 'F':
     print "error: unidentified flag %s" % flag
     exit(1)
 
-i = 1
-line_edit = ''
-while sys.argv[i] != flag:
-    line_edit = line_edit + sys.argv[i] + ' '
-    i += 1
+lattice, basis, elements, num_atoms, selectiveflag, coordinate_type, coordinates, selective = read_poscar(sys.argv[-1])
 
-file_name = sys.argv[-1]
-output_file_name = file_name + '.ed'
-with open(file_name) as file_input:
-        with open(output_file_name, 'w') as file_output:
-            lines = file_input.readlines()
-            lines = process(lines)
-            file_output.writelines(lines)
+edit_line_number = []
+pattern = re.compile(r'-')
+if len(sys.argv) == 4:
+    line_number = re.split(',', sys.argv[1])
+    for num in line_number:
+        if pattern.search(num):
+            num_list = pattern.split(num)
+            num_list[0] = int(num_list[0]) - 1
+            num_list[1] = int(num_list[1])
+            for i in xrange(num_list[0], num_list[1]):
+                edit_line_number.append(i)
+        else:
+            edit_line_number.append(int(num) - 1)
+
+if edit_line_number:
+    for i in edit_line_number:
+        selective[i] = [sys.argv[-2], sys.argv[-2], sys.argv[-2]]
+else:
+    for i in xrange(0, len(coordinates)):
+        selective[i] = [sys.argv[-2], sys.argv[-2], sys.argv[-2]]
+
+write_poscar(sys.argv[-1], lattice, basis, elements, num_atoms, selectiveflag, coordinate_type, coordinates, selective)
+
 
 print "\n"
 print "---------------Done---------------"
