@@ -140,18 +140,24 @@ with open(sys.argv[1]) as IN:
         if input_file[i].strip() == '':
             break
         line = space.split(input_file[i].strip())
-        gjfcoord.append([float(line[1]), float(line[2]), float(line[3])])
+        gjfcoord.append([float(line[1]), float(line[2]), float(line[3]), line[0]])
 
     coor = []
-    num_atoms[2] = 0
+    prev_element = ''
+    elements = [elements[0]]
+    num_atoms = [num_atoms[0]]
     for i in xrange(c, d):
+        if gjfcoord[3] != prev_element:
+            elements.append(gjfcoord[3])
+            prev_element = gjfcoord[3]
+            num_atoms.append(1)
+        else:
+            num_atoms[-1] += 1
+
         v1 = gjfcoord[i][0] - gjfcoord[a][0] + pos1[b][0]
         v2 = gjfcoord[i][1] - gjfcoord[a][1] + pos1[b][1]
         v3 = gjfcoord[i][2] - gjfcoord[a][2] + pos1[b][2]
         pos1.append([v1, v2, v3])
-        num_atoms[2] += 1
-    num_atoms[2] -= 2
+
 
 VASP.write_poscar('POSCAR.vasp', lattice, basis, elements, num_atoms, selectiveflag, coordinate_type, pos1, selective)
-
-
