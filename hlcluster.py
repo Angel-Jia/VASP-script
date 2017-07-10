@@ -162,4 +162,4 @@ with open(sys.argv[1]) as IN:
         pos1.append([v1, v2, v3])
 
 
-VASP.write_poscar('POSCAR.vasp', lattice, basis, elements, num_atoms, selectiveflag, coordinate_type, pos1, selective)
+VASP.write_poscar('POSCAR', lattice, basis, elements, num_atoms, selectiveflag, coordinate_type, pos1, selective)
