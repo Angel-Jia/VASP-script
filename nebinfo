@@ -1,7 +1,6 @@
 #! /bin/sh
 echo ""
 echo ""
-echo "This script will pack all CONTCARs and POSCARs, and creat .gjf and movie corresponding to them"
 echo "############ All CONTACRs and POSCARs in packege will be converted to cartesian file ############"
 echo ""
 echo ""
