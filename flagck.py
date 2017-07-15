@@ -9,6 +9,13 @@ with open(file_name) as input_file:
 pattern = re.compile('\s+')
 pre_flag = []
 flag = []
+
+if re.search(r'^[Ss]', content[7]) is None:
+    print ""
+    print "Selective flag has not been found!"
+    print ""
+    exit(0)
+
 print ""
 print "Atom_id                      Content"
 print "------------------------------------------"
