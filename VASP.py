@@ -158,3 +158,57 @@ def kardir(basis, coordinates):
         coordinates[i][1] = v2 + 60 - int(v2 + 60)
         coordinates[i][2] = v3 + 60 - int(v3 + 60)
     return coordinates
+
+
+def read_gjf(file_name):
+    begin = re.compile(r'^[0-9]+\s+[0-9]+$')
+    space = re.compile(r'\s+')
+    content = []
+
+    with open(file_name) as input_file:
+        content = input_file.readlines()
+    index = 4
+    while index < len(content):
+        if begin.search(content[index].strip()) is not None:
+            index += 1
+            break
+        index += 1
+
+    elements = []
+    num_atoms = []
+    coordinates = []
+    atoms = 0
+
+    while index < len(content):
+        line = space.split(content[index].strip())
+        coordinates.append([float(line[1]), float(line[2]), float(line[3])])
+        if elements and elements[-1] == line[0]:
+            atoms += 1
+        elif elements and elements[-1] != line[0]:
+            elements.append(line[0])
+            num_atoms.append(atoms)
+            atoms = 1
+        else:
+            elements.append(line[0])
+            atoms = 1
+        index += 1
+    num_atoms.append(atoms - 1)
+
+    return elements, num_atoms, coordinates
+
+
+def write_gif(file_name, elements, num_atoms, coordinates):
+    with open(file_name, 'w') as output_file:
+        output_file.write("# opt freq b3lyp/6-31g\n\n")
+        output_file.write("creat from vasp file\n\n")
+        output_file.write("0 1\n")
+        total_index = 0
+        for element_id in range(0, len(elements)):
+            element_index = 0
+            while element_index < num_atoms[element_id]:
+                output_file.write("%2s    %16.10f    %16.10f    %16.10f\n" %
+                      (elements[element_id], coordinates[total_index][0], coordinates[total_index][1], coordinates[total_index][2]))
+                element_index += 1
+                total_index += 1
+
+        output_file.write("\n\n")
