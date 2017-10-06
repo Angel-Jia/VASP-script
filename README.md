@@ -255,15 +255,15 @@ exec_directory = '~/test-2'
 max_cores = 24
 interval = 10
 ```
-`wait_directory`是放置gjf文件的文件夹，`exec_directory`是执行gjf文件的文件夹，`max_cores`是节点的cpu核心数量，`interval`是检查任务是否完成的时间间隔，单位是秒。
-脚本运行之后将会不断检查`wait_directory`文件夹中是否有gjf文件，如果有则将其移动到`exec_directory`文件夹中执行。脚本运行期间可不断往`wait_directory`文件夹中添加gjf文件。检查的时间间隔由`interval`来控制，该间隔不宜太短，以免影响性能，也不宜过长，以免机器空转，推荐10~30秒。
-每一个gjf文件执行前都会先根据关键字`nprocshared`来查找执行该gjf文件需要多少核心数，如果节点有足够的空闲核心数才会执行该文件。因此每个gjf文件都必须通过关键字`%nprocshared=cores`来设定所需要的cpu核心数，没有设定的文件将会被跳过。
-脚本运行过程中的一些关键信息会输出到`wait_directory`文件夹下的`output`文件中。
-如果要终止某个运行中的gjf文件，可以在`wait_directory`文件夹创建`STOP`文件，文件格式为：
+- `wait_directory`是放置gjf文件的文件夹，`exec_directory`是执行gjf文件的文件夹，`max_cores`是节点的cpu核心数量，`interval`是检查任务是否完成的时间间隔，单位是秒。
+- 脚本运行之后将会不断检查`wait_directory`文件夹中是否有gjf文件，如果有则将其移动到`exec_directory`文件夹中执行。脚本运行期间可不断往`wait_directory`文件夹中添加gjf文件。检查的时间间隔由`interval`来控制，该间隔不宜太短，以免影响性能，也不宜过长，以免机器空转，推荐10~30秒。
+- 每一个gjf文件执行前都会先根据关键字`nprocshared`来查找执行该gjf文件需要多少核心数，如果节点有足够的空闲核心数才会执行该文件。因此每个gjf文件都必须通过关键字`%nprocshared=cores`来设定所需要的cpu核心数，没有设定的文件将会被跳过。
+- 脚本运行过程中的一些关键信息会输出到`wait_directory`文件夹下的`output`文件中。
+- 如果要终止某个运行中的gjf文件，可以在`wait_directory`文件夹创建`STOP`文件，文件格式为：
 ```
 xxx.gjf
 xxx.gjf
 xxx.gjf
 ```
 其中的gjf文件将会被终止运行，随后该`STOP`文件会被删除。因此最好在其它目录中编辑该`STOP`文件，然后将其拷贝到`wait_directory`文件夹中。
-尽量避免在`wait_directory`文件夹中编辑文件，以免脚本出现不必要的错误。如果需要编辑文件，最好把文件移动到其它文件夹中，编辑好之后再移动回来。如果脚本运行出错，则所有正在运行的任务都会被强行终止。
+- 尽量避免在`wait_directory`文件夹中编辑文件，以免脚本出现不必要的错误。如果需要编辑文件，最好把文件移动到其它文件夹中，编辑好之后再移动回来。如果脚本运行出错，则所有正在运行的任务都会被强行终止。
