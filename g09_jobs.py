@@ -6,6 +6,7 @@ import subprocess
 import time
 import re
 import shutil
+import signal
 
 # 填入参数，分别是用于等待的文件夹路径，用于执行的文件夹路径和最大可以使用的CPU核心数（！是CPU核心数，不是CPU个数！）
 # 需要执行的gjf文件放到'wait_directory'路径下，本脚本会自动将其移动到'exec_directory'路径中执行
@@ -19,6 +20,8 @@ max_cores = 24
 
 os.chdir(wait_directory)
 output_file = open('output', 'w')
+interval = 10
+
 if not os.path.exists(wait_directory):
     output_file.write("Path '%s' is not existed\n" % wait_directory)
     output_file.write("Please check your settings!\n")
@@ -45,14 +48,17 @@ def cores_occupy_query():
     if jobs_list:
         cores_num = 0
         new_jobs_list = []
+        flag = False
         for job in jobs_list:
             if job[0].poll() is None:
                 cores_num += job[1]
                 new_jobs_list.append(job)
             else:
                 output_file.write("Finished: %s\n" % job[2])
-        output_file.write('\n')
-        output_file.flush()
+                flag = True
+        if flag:
+            output_file.write('\n')
+            output_file.flush()
         jobs_list = new_jobs_list
         return cores_num
     else:
@@ -80,15 +86,38 @@ def g09_file_run(g09_file_list):
             # 查询已占用核心数
             cores_occupy = cores_occupy_query()
             while cores_occupy + cores > max_cores:
-                time.sleep(10)
+                time.sleep(interval)
+                stop_run()
                 cores_occupy = cores_occupy_query()
 
             if os.path.isfile(g09_file):
                 output_file.write("Execute file: %s\n\n" % g09_file)
                 output_file.flush()
-                g09_job = subprocess.Popen('g09 %s' % g09_file, shell=True)
+                g09_job = subprocess.Popen('g09 %s' % g09_file, shell=True, preexec_fn=os.setsid)
                 jobs_list.append([g09_job, cores, g09_file])
         os.chdir(wait_directory)
+
+
+def kill_job_in_jobs_list(file_name):
+    for job in jobs_list:
+        if file_name == job[2]:
+            os.killpg(os.getpgid(job[0].pid), signal.SIGTERM)
+            # output_file.write("%s has been found and killed\n" % file_name)
+            # output_file.flush()
+            break
+
+
+def stop_run():
+    global jobs_list
+    if os.path.isfile(wait_directory + '/STOP'):
+        with open(wait_directory + '/STOP') as stop_file:
+            for line in stop_file.readlines():
+                line = line.strip()
+                if line.endswith('.gjf'):
+                    kill_job_in_jobs_list(line)
+        os.remove(wait_directory + '/STOP')
+
+
 # jobs_list存放当前运行的Gaussian程序任务列表，其中每一项任务由三个元素构成:[Popen, cores, file_name]
 # Popen是任务对象，cores是所用CPU核心数, file_name是文件名
 jobs_list = []
@@ -100,12 +129,19 @@ while 1:
         if g09_file.endswith('.gjf'):
             file_list.append(g09_file)
 
+    # if jobs_list:
+    #     for job in jobs_list:
+    #         output_file.write('  %s is running!' % job[2])
+    # output_file.write('\n')
+    # output_file.flush()
+
     # 两个列表都空了，执行完毕，程序退出
     if not jobs_list and not file_list:
         break
     # file_list空了，jobs_list没空，等待程序执行
     elif not file_list and jobs_list:
-        time.sleep(10)
+        time.sleep(interval)
+        stop_run()
         cores_occupy_query()
         continue
     else:
