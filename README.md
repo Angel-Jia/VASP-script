@@ -85,7 +85,7 @@ step1 step2 ... 是离子步的步数，可以省略。
 flachg.pl line1,line2,.... T/F vaspfile
 ```
 line1、line2 ... 是需要改变驰豫标记的原子编号，POSCAR文件中的原子从上至下的编号依次是1，2，3，...，n。
-例如执行命令
+例如执行命令`chgflag.py 2,5,10-13,22 F POSCAR`则会将POSCAR文件中第2个、第5个、第10-13个以及第22个原子的驰豫标记变为`F F F`
 
 -----
 
