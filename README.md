@@ -147,9 +147,10 @@ moviecombine.pl file1 file2 file3 ..... fileN output X Y Z
 moviecombine.pl file1.xyz file2.xyz file3.xyz out.xyz 2.0 0.0 0.0
 ```
 `file1.xyz`中的所有原子坐标不变；
-`file2.xyz`中的所有原子坐标将会加上(1*X,1*Y,1*Z),即统一在X轴方向加2;
-`file3.xyz`中的所有原子坐标将会加上(2*X,2*Y,2*Z),即统一在X轴方向加4;
+`file2.xyz`中的所有原子坐标将会加上(1\*X,1\*Y,1\*Z),即统一在X轴方向加2;
+`file3.xyz`中的所有原子坐标将会加上(2\*X,2\*Y,2\*Z),即统一在X轴方向加4;
 最后生成的`out.xyz`文件中，3个images将按照X轴的方向进行排列。
+
 ----
 
 #### nebinfo
