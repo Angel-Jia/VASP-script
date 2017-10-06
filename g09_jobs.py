@@ -77,7 +77,7 @@ def g09_file_run(g09_file_list):
             cores_match = cores_pattern.search(exec_command('head %s' % g09_file))
             if cores_match is None:
                 output_file.write("Error: can not find key word 'nprocshared' in file: %s\n" % g09_file)
-                output_file.write("This file will be ignored!\n\n")
+                output_file.write("This file will be ignored!\n")
                 output_file.flush()
                 os.chdir(wait_directory)
                 continue
@@ -91,7 +91,7 @@ def g09_file_run(g09_file_list):
                 cores_occupy = cores_occupy_query()
 
             if os.path.isfile(g09_file):
-                output_file.write("Execute file: %s\n\n" % g09_file)
+                output_file.write("Execute file: %s (free cores: %d)\n" % (g09_file, max_cores - cores - cores_occupy))
                 output_file.flush()
                 g09_job = subprocess.Popen('g09 %s' % g09_file, shell=True, preexec_fn=os.setsid)
                 jobs_list.append([g09_job, cores, g09_file])
