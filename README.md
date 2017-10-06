@@ -36,15 +36,17 @@ cel2pos.pl file.cell
 check
 ```
 在运行前用于检查参数的脚本，可检查K点的设置，POTCAR的赝势类型和POSCAR的前六行输入
+如果执行该脚本的文件夹路径中含有关键字`dimer`,则还会检查是否有MODECAR存在
 
 -----
 
 #### cpfile
 用法：
 ```
-cpfile dir
+cpfile target_directory
 ```
-把dir路径下的INCAR、POTCAR、KPOINTS以及所有的可执行文件拷贝到当前文件夹
+把target_directory路径下的INCAR、POTCAR、KPOINTS以及所有的可执行文件拷贝到当前文件夹
+使用`-a`选项除了拷贝以上文件，还会将POSCAR拷贝到当前文件夹
 
 -----
 
@@ -62,25 +64,28 @@ dir2car.pl file1 file2 ...
 ```
 energy dir1 dir2 ...
 ```
-用于快速获取体系能量，会抓取文件夹dir1 dir2 ...中OUTCAR文件中的所有能量`energy without entropy`并分别输出最后一个值。如果没有参数，则会输出当前文件夹下（包括子文件夹）所有的OUTCAR中的最后一个`energy without entropy`的值。
+用于快速获取体系能量，会分别抓取文件夹dir1 dir2 ...中OUTCAR文件中的能量`energy without entropy`，并输出最后一个值。如果没有参数，则会输出当前文件夹下（包括子文件夹）所有的OUTCAR中的最后一个`energy without entropy`的值。
 
 -----
 
 #### excoor.pl
 用法：
 ```
-excoor.pl file1 file2 ...
+excoor.pl step1 step2 ...
 ```
-file必须是OUTCAR文件，该脚本会抓取其中每一个离子步结束后体系的能量以及其中每个原子的坐标和受力情况，并在行末会计算出每个原子收到的xyz合力的大小，结果保存到file.pos文件中。
+该脚本会首先抓取OUTCAR文件中每一个离子步结束后体系的能量以及其中每个原子的坐标和受力情况，并在行末会计算出每个原子收到的xyz合力的大小，结果保存到OUTCAR.pos文件中。然后将第'step1'、'step2' ... 的坐标另存为POSCAR文件。
+step1 step2 ... 是离子步的步数，可以省略。
+例如执行命令`excoor.pl 10`，会生成一个OURCAR.pos文件，以及包含第10个离子步的POSCAR文件。
 
 -----
 
-#### flachg.pl
+#### chgflag.py
 用法：
 ```
-flachg.pl modelfile vaspfile
+flachg.pl line1,line2,.... T/F vaspfile
 ```
-用于将vaspfile中的原子弛豫标记T/F换成modefile中的原子弛豫标记，结果将覆盖vaspfile。两个文件都必须是标准VASP输入输出文件，且原子数量必须相同。modefile仅采用其原子弛豫标记T/F。可用于连续地计算，比如固定一部分原子进行计算，完成之后再固定另外一部分原子进行下一步计算。
+line1、line2 ... 是需要改变驰豫标记的原子编号，POSCAR文件中的原子从上至下的编号依次是1，2，3，...，n。
+例如执行命令
 
 -----
 
