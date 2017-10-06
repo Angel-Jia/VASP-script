@@ -7,8 +7,30 @@ import time
 import re
 import shutil
 
-wait_directory = ''
-exec_directory = ''
+# 填入参数，分别是用于等待的文件夹路径，用于执行的文件夹路径和最大可以使用的CPU核心数（！是CPU核心数，不是CPU个数！）
+# 需要执行的gjf文件放到'wait_directory'路径下，本脚本会自动将其移动到'exec_directory'路径中执行
+# 本脚本放在哪里都可以，程序一开始会自动切换到'wait_directory'
+wait_directory = '/WORK/nankai_chem_ldli_1/temp/test-1'
+exec_directory = '/WORK/nankai_chem_ldli_1/temp/test-2'
+max_cores = 24
+
+# 注意事项
+# gjf文件所用的核心数必须用关键字%nprocshared=xx来指定，否则将搜索不到
+
+os.chdir(wait_directory)
+output_file = open('output', 'w')
+if not os.path.exists(wait_directory):
+    output_file.write("Path '%s' is not existed\n" % wait_directory)
+    output_file.write("Please check your settings!\n")
+    output_file.close()
+    exit(0)
+
+if not os.path.exists(exec_directory):
+    output_file.write("Path '%s' is not existed\n" % exec_directory)
+    output_file.write("Please check your settings!\n")
+    output_file.close()
+    exit(0)
+
 file_list = []
 cores_pattern = re.compile(r'%nprocshared=([0-9]+)')
 
@@ -18,40 +40,78 @@ def exec_command(command):
     return pipe.stdout.read().strip()
 
 
-def cores_occupy():
+def cores_occupy_query():
+    global jobs_list
     if jobs_list:
         cores_num = 0
+        new_jobs_list = []
         for job in jobs_list:
             if job[0].poll() is None:
                 cores_num += job[1]
+                new_jobs_list.append(job)
             else:
-                job[2] = True
-
+                output_file.write("Finished: %s\n" % job[2])
+        output_file.write('\n')
+        output_file.flush()
+        jobs_list = new_jobs_list
+        return cores_num
     else:
         return 0
 
-# jobs_list存放当前运行的Gaussian程序任务列表，其中每一项任务由三个元素构成:[Popen, cores, isFinished]
-# Popen是任务对象，cores是所用CPU核心数，isFinished是任务完成标记，初始为False，任务完成后变为True
+
+def g09_file_run(g09_file_list):
+    global jobs_list
+    for g09_file in g09_file_list:
+        if os.path.isfile(g09_file):
+            # 移动文件并切换目录
+            shutil.move(wait_directory + '/' + g09_file, exec_directory)
+            os.chdir(exec_directory)
+
+            # 查找需要的core数
+            cores_match = cores_pattern.search(exec_command('head %s' % g09_file))
+            if cores_match is None:
+                output_file.write("Error: can not find key word 'nprocshared' in file: %s\n" % g09_file)
+                output_file.write("This file will be ignored!\n\n")
+                output_file.flush()
+                os.chdir(wait_directory)
+                continue
+            cores = int(cores_match.group(1))
+
+            # 查询已占用核心数
+            cores_occupy = cores_occupy_query()
+            while cores_occupy + cores > max_cores:
+                time.sleep(10)
+                cores_occupy = cores_occupy_query()
+
+            if os.path.isfile(g09_file):
+                output_file.write("Execute file: %s\n\n" % g09_file)
+                output_file.flush()
+                g09_job = subprocess.Popen('g09 %s' % g09_file, shell=True)
+                jobs_list.append([g09_job, cores, g09_file])
+        os.chdir(wait_directory)
+# jobs_list存放当前运行的Gaussian程序任务列表，其中每一项任务由三个元素构成:[Popen, cores, file_name]
+# Popen是任务对象，cores是所用CPU核心数, file_name是文件名
 jobs_list = []
 
-os.chdir(wait_directory)
-for g09_file in os.listdir(wait_directory):
-    if g09_file.endswith('.gjf') and os.path.isfile(g09_file):
-        # 移动文件并切换目录
-        shutil.move(wait_directory + '/' + g09_file, exec_directory)
-        os.chdir(exec_directory)
+while 1:
+    os.chdir(wait_directory)
+    file_list = []
+    for g09_file in os.listdir(wait_directory):
+        if g09_file.endswith('.gjf'):
+            file_list.append(g09_file)
 
-        # 查找需要的core数
-        cores_match = cores_pattern.search(exec_command('head %s' % g09_file))
-        if cores_match is None:
-            print "Error: can not find key word nprocshared in file %s" % g09_file
-            print "This file will be ignored!"
-            continue
-        cores = int(cores_match.group(1))
-
-        #
-        g09_job = subprocess.Popen('g09 %s' % g09_file, shell=True)
-        jobs_list.append([g09_job, cores, False])
+    # 两个列表都空了，执行完毕，程序退出
+    if not jobs_list and not file_list:
+        break
+    # file_list空了，jobs_list没空，等待程序执行
+    elif not file_list and jobs_list:
+        time.sleep(10)
+        cores_occupy_query()
+        continue
+    else:
+        g09_file_run(file_list)
+output_file.write("---------- All Tasks Finished! ----------\n")
+output_file.close()
 
 
 # 极端情况下会出错，比如正在提交gjf的时候你删除了这个文件
