@@ -8,7 +8,7 @@ from VASP import write_poscar
 
 if len(sys.argv) != 3 and len(sys.argv) != 4:
     print "\n"
-    print "usage: chgflagat.py line1,line2,.... T/F vaspfile"
+    print "usage: chgflag.py line1,line2,.... T/F vaspfile"
     print "the format of line1,line2,... can be either x or x-x"
     print "try again"
     print "\n"

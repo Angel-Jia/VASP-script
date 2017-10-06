@@ -14,13 +14,14 @@ import signal
 wait_directory = '/WORK/nankai_chem_ldli_1/temp/test-1'
 exec_directory = '/WORK/nankai_chem_ldli_1/temp/test-2'
 max_cores = 24
+interval = 10
 
 # 注意事项
 # gjf文件所用的核心数必须用关键字%nprocshared=xx来指定，否则将搜索不到
 
 os.chdir(wait_directory)
 output_file = open('output', 'w')
-interval = 10
+
 
 if not os.path.exists(wait_directory):
     output_file.write("Path '%s' is not existed\n" % wait_directory)
