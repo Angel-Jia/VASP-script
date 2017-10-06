@@ -30,10 +30,10 @@ cel2pos.pl file.cell
 
 -----
 
-#### check
+#### ck
 用法：
 ```
-check
+ck
 ```
 在运行前用于检查参数的脚本，可检查K点的设置，POTCAR的赝势类型和POSCAR的前六行输入
 如果执行该脚本的文件夹路径中含有关键字`dimer`,则还会检查是否有MODECAR存在
@@ -45,8 +45,8 @@ check
 ```
 cpfile target_directory
 ```
-把target_directory路径下的INCAR、POTCAR、KPOINTS以及所有的可执行文件拷贝到当前文件夹
-使用`-a`选项除了拷贝以上文件，还会将POSCAR拷贝到当前文件夹
+把target_directory路径下的INCAR、POTCAR、KPOINTS以及所有的可执行文件拷贝到当前文件夹。
+使用`-a`选项除了拷贝以上文件，还会将POSCAR拷贝到当前文件夹。
 
 -----
 
