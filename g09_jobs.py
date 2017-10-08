@@ -103,6 +103,7 @@ def kill_job_in_jobs_list(file_name):
     for job in jobs_list:
         if file_name == job[2]:
             os.killpg(os.getpgid(job[0].pid), signal.SIGTERM)
+            # ---------- debug ----------
             # output_file.write("%s has been found and killed\n" % file_name)
             # output_file.flush()
             break
@@ -130,6 +131,7 @@ while 1:
         if g09_file.endswith('.gjf'):
             file_list.append(g09_file)
 
+    # ---------- debug ----------
     # if jobs_list:
     #     for job in jobs_list:
     #         output_file.write('  %s is running!' % job[2])
@@ -149,7 +151,3 @@ while 1:
         g09_file_run(file_list)
 output_file.write("---------- All Tasks Finished! ----------\n")
 output_file.close()
-
-
-# 极端情况下会出错，比如正在提交gjf的时候你删除了这个文件
-# 如果python出错，则所有正在运行的gjf文件都会终止
