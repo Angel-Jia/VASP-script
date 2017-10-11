@@ -36,6 +36,15 @@ if len(sys.argv) == 4:
         else:
             edit_line_number.append(int(num) - 1)
 
+if not selective:
+    total_atoms = sum(num_atoms)
+    if sys.argv[-2] == 'T':
+        for i in range(0, total_atoms):
+            selective.append(['F', 'F', 'F'])
+    else:
+        for i in range(0, total_atoms):
+            selective.append(['T', 'T', 'T'])
+
 if edit_line_number:
     for i in edit_line_number:
         selective[i] = [sys.argv[-2], sys.argv[-2], sys.argv[-2]]
