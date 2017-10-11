@@ -36,7 +36,8 @@ if len(sys.argv) == 4:
         else:
             edit_line_number.append(int(num) - 1)
 
-if not selective:
+if selectiveflag == '':
+    selectiveflag = 'Selective dynamics'
     total_atoms = sum(num_atoms)
     if sys.argv[-2] == 'T':
         for i in range(0, total_atoms):
