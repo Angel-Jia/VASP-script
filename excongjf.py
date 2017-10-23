@@ -36,4 +36,4 @@ for directory in dir_list:
             continue
         os.system("mv %s %s" % (directory + '/' + default_file + '.gjf', directory + '.gjf'))
 print ''
-print '-----Finish-----\n'
+print '----- Done -----\n'
