@@ -1,26 +1,28 @@
-#!/bin/env python
+#!/bin/env python3
 
 import sys
 import re
-from VASP import read_poscar
-from VASP import write_poscar
+from VASP import readVasp
+from VASP import writeVasp
 
 
 if len(sys.argv) != 3 and len(sys.argv) != 4:
-    print "\n"
-    print "usage: chgflag.py line1,line2,.... T/F vaspfile"
-    print "the format of line1,line2,... can be either x or x-x"
-    print "try again"
-    print "\n"
-    exit(0)
+    print("")
+    print("Usage: %s line1,line2,.... T/F vaspfile" % sys.argv[0].split('/')[-1])
+    print("the format of line1,line2,... can be either x or x-x")
+    print("try again")
+    print("")
+    exit(1)
 
 
 flag = sys.argv[-2]
 if flag != 'T' and flag != 'F':
-    print "error: unidentified flag %s" % flag
+    print('')
+    print("error: unidentified flag %s" % flag)
+    print('')
     exit(1)
 
-lattice, basis, elements, num_atoms, selectiveflag, coordinate_type, coordinates, selective = read_poscar(sys.argv[-1])
+lattice, basis, elements, num_atoms, selectiveflag, coordinate_type, coordinates, selective = readVasp(sys.argv[-1])
 
 edit_line_number = []
 pattern = re.compile(r'-')
@@ -31,7 +33,7 @@ if len(sys.argv) == 4:
             num_list = pattern.split(num)
             num_list[0] = int(num_list[0]) - 1
             num_list[1] = int(num_list[1])
-            for i in xrange(num_list[0], num_list[1]):
+            for i in range(num_list[0], num_list[1]):
                 edit_line_number.append(i)
         else:
             edit_line_number.append(int(num) - 1)
@@ -50,15 +52,11 @@ if edit_line_number:
     for i in edit_line_number:
         selective[i] = [sys.argv[-2], sys.argv[-2], sys.argv[-2]]
 else:
-    for i in xrange(0, len(coordinates)):
+    for i in range(0, len(coordinates)):
         selective[i] = [sys.argv[-2], sys.argv[-2], sys.argv[-2]]
 
-write_poscar(sys.argv[-1], lattice, basis, elements, num_atoms, selectiveflag, coordinate_type, coordinates, selective)
+writeVasp(sys.argv[-1], lattice, basis, elements, num_atoms, selectiveflag, coordinate_type, coordinates, selective)
 
-
-print "\n"
-print "---------------Done---------------"
-print "\n"
-
-
-
+print('')
+print('---------------Done---------------')
+print('')

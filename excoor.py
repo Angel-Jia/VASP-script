@@ -1,4 +1,7 @@
-#!/bin/env python
+#!/bin/env python3
+
+# 提取OUTCAR中每一步的原子坐标和能量
+# 可选参数为step，例如excoor.py 20为提取第20步的构型，生成相应的POSCAR文件
 
 import re
 import math
@@ -8,11 +11,11 @@ from VASP import read_total_atoms
 from VASP import grep_outcar
 
 
-print ""
+print('')
 number_of_atoms = read_total_atoms()
 
-string = "grep \"POSITION\" -A %d OUTCAR" % (int(number_of_atoms) + 15)
-content = grep_outcar(string)
+cmd = "grep \"POSITION\" -A %d OUTCAR" % (int(number_of_atoms) + 15)
+content = grep_outcar(cmd)
 
 space = re.compile(r'\s+')
 position = re.compile(r'POSITION')
@@ -45,7 +48,7 @@ if len(sys.argv) != 1:
     length = len(sys.argv)
     pattern = re.compile(r'[^0-9]')
     step_list = []
-    for i in xrange(1, length):
+    for i in range(1, length):
         step_list.append(int(sys.argv[i]))
     step_list.sort()
 
@@ -76,5 +79,5 @@ if len(sys.argv) != 1:
                     break
             index += 4
 
-print "    --------------------Done--------------------"
-print ""
+print("    --------------------Done--------------------")
+print('')

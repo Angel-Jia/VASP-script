@@ -1,4 +1,5 @@
 #!/bin/bash
+# check information before running vasp
 
 echo ""
 echo "KPOINTS:"

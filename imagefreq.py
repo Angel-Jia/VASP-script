@@ -1,12 +1,12 @@
-#!/bin/env python
+#!/bin/env python3
 
 import re
 from VASP import read_total_atoms
 from VASP import grep_outcar
 
-print ""
-print "    --------------------Processing--------------------"
-print ""
+print("")
+print("    --------------------Processing--------------------")
+print("")
 
 atom_num = read_total_atoms()
 atom_num += 2
@@ -19,12 +19,12 @@ content_length = len(content)
 freq_start = 0
 freq_end = 0
 freq_id = 0
-for index in xrange(0, content_length):
+for index in range(0, content_length):
     if content[index].strip() == "":
         freq_end = index
         file_name = "freq" + freq_id
         with open(file_name, 'w') as output_file:
-            for i in xrange(freq_start, freq_end + 1):
+            for i in range(freq_start, freq_end + 1):
                 output_file.write(str(content[i]))
         continue
 
@@ -34,11 +34,8 @@ for index in xrange(0, content_length):
     else:
         freq_start = index
         freq_id = freq_id_search.group(1)
-        print "                          freq%s" % freq_id
+        print("                          freq%s" % freq_id)
 
-print ""
-print "       --------------------Done--------------------"
-print ""
-
-
-
+print('')
+print("       --------------------Done--------------------")
+print('')

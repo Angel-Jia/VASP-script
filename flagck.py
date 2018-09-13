@@ -1,4 +1,5 @@
-#!/bin/env python
+#!/bin/env python3
+# 检查T/F标记
 
 import re
 
@@ -11,24 +12,24 @@ pre_flag = []
 flag = []
 
 if re.search(r'^[Ss]', content[7]) is None:
-    print ""
-    print "Selective flag has not been found!"
-    print ""
-    exit(0)
+    print('')
+    print("Selective flag not found!")
+    print('')
+    exit(1)
 
-print ""
-print "Atom_id                      Content"
-print "------------------------------------------"
-for i in xrange(9, len(content)):
+print(1)
+print("Atom_id                      Content")
+print("------------------------------------------")
+for i in range(9, len(content)):
     temp = pattern.split(content[i].strip())
 
     if len(temp) == 1:
         exit(0)
 
     if len(temp) != 6:
-        print "-----------"
-        print "%4d:    %s" % (i - 8, content[i].rstrip())
-        print "-----------"
+        print("-----------")
+        print("%4d:    %s" % (i - 8, content[i].rstrip()))
+        print("-----------")
         continue
 
     if len(pre_flag) == 0:
@@ -41,8 +42,8 @@ for i in xrange(9, len(content)):
         continue
     else:
         pre_flag = flag
-        print "%4d:    %s" % (i - 9, content[i - 1].rstrip())
-        print "%4d:    %s" % (i - 8, content[i].rstrip())
-        print "-----------"
+        print("%4d:    %s" % (i - 9, content[i - 1].rstrip()))
+        print("%4d:    %s" % (i - 8, content[i].rstrip()))
+        print("-----------")
 
-print ""
+print('')
