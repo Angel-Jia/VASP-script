@@ -10,6 +10,7 @@ if len(sys.argv) == 1:
     print('')
     exit(1)
 
+print('')
 print("############### This script converts vasp file into .xyz file ###############")
 print("             ############ CONTCAR or POSCAR -> .xyz ############")
 print('')
@@ -23,4 +24,6 @@ for vasp_file in sys.argv[1:]:
         vasp_file = '%s.xyz' % vasp_file
     writeXYZ(vasp_file, 1, elements, num_atoms, coordinates)
 
+print('')
 print("              --------------------- DONE ---------------------\n")
+print('')

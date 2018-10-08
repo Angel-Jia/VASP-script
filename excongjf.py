@@ -19,6 +19,7 @@ if not os.path.isdir(sys.argv[-1]):
 
 print('')
 print('--------------------')
+print('')
 print("Default file: %s" % default_file)
 dir_list = []
 for directory in sys.argv[1:]:
@@ -30,13 +31,13 @@ for directory in sys.argv[1:]:
 print('')
 print('Processing...')
 for directory in dir_list:
-        pipe = subprocess.Popen("vas2gjf.py %s" % (directory + '/' + default_file),
-                                shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        error = pipe.stderr.read()
-        if error != '':
-            print("Error in path(%s): %s" % (directory, error))
-            continue
-        os.system("mv %s %s" % ('%s/%s.gjf' % (directory, default_file), '%s.gjf' % directory))
+    pipe = subprocess.Popen("vas2gjf.py %s" % (directory + '/' + default_file),
+                            shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    error = pipe.stderr.read().decode()
+    if error != '':
+        print("Error in path(%s): %s" % (directory, error))
+        continue
+    os.system("mv %s/%s.gjf %s" % (directory, default_file, '%s.gjf' % directory))
 print('')
 print('----- Done -----')
 print('')

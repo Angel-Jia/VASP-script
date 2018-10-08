@@ -2,7 +2,7 @@
 
 import sys
 from VASP import readVasp
-from VASP import writeGif
+from VASP import writeGjf
 
 if len(sys.argv) == 1:
     print('')
@@ -10,6 +10,7 @@ if len(sys.argv) == 1:
     print('')
     exit(1)
 
+print('')
 print('############### This script converts vasp file into gview file ###############')
 print('             ############ CONTCAR or POSCAR -> .gjf ############')
 print('')
@@ -20,7 +21,7 @@ for vasp_file in sys.argv[1:]:
         vasp_file = '%s.gjf' % vasp_file[:-5]
     else:
         vasp_file = '%s.gjf' % vasp_file
-    writeGif(vasp_file, elements, num_atoms, coordinates)
+    writeGjf(vasp_file, elements, num_atoms, coordinates)
 
 print('')
-print('                     --------------- Done ---------------')
+print('                     --------------- Done ---------------\n')

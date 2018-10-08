@@ -1,14 +1,14 @@
 #!/bin/env python3
 
 import sys
-from VASP import readVasp
+from VASP import execCmd, CmdRrror
 from VASP import writeXYZ
 import numpy as np
 import re
 
-if len(sys.argv) < 4:
+if len(sys.argv) < 3:
     print('')
-    print('Usage: %s model_file(POSCAR) freq1 freq2 ... frames scale' % sys.argv[0].split('/')[-1])
+    print('Usage: %s freq1 freq2 ... frames scale' % sys.argv[0].split('/')[-1])
     print('')
     exit(1)
 
@@ -39,15 +39,42 @@ def readFreq(file_name):
     return np.stack(coordinates), np.stack(dcoordinates)
 
 
-_, _, elements, num_atoms, _, _, _, _ = readVasp(sys.argv[1])
-frames = int(sys.argv[-2])
-dframe = 1 / float(frames)
-scale = float(sys.argv[-1])
+def get_elements_info():
+    # 元素符号
+    cmd = "grep 'VRHFIN' OUTCAR"
+    try:
+        content = execCmd(cmd)
+    except CmdRrror:
+        print(CmdRrror)
+        print("")
+        exit(1)
+    pattern = re.compile(r'=(.*?):')
+    elements = []
+    for line in content:
+        line = line.strip()
+        elements.append(pattern.search(line).group(1))
+
+    # 各元素原子数量
+    cmd = "grep 'ions per type' OUTCAR"
+    try:
+        atom_num = execCmd(cmd)
+    except CmdRrror:
+        print(CmdRrror)
+        print("")
+        exit(1)
+
+    num_atoms = list(map(int, space.split(atom_num[0].strip().split('=')[-1].strip())))
+    return elements, num_atoms
+
 
 print('')
 print('################ This script makes animation of vibration ################')
 print('')
-for freq_file in sys.argv[2:-2]:
+elements, num_atoms = get_elements_info()
+frames = int(sys.argv[-2])
+dframe = 1 / float(frames)
+scale = float(sys.argv[-1])
+for freq_file in sys.argv[1:-2]:
     print('                            Processing %s' % freq_file)
     freq_pos, vibration = readFreq(freq_file)
 
@@ -79,4 +106,4 @@ for freq_file in sys.argv[2:-2]:
     writeXYZ('%s.xyz' % freq_file, num_structures, elements, num_atoms, coordinates)
 
 print('')
-print('                ------------------ Done ------------------')
+print('                ------------------ Done ------------------\n')

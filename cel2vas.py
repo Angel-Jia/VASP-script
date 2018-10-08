@@ -18,4 +18,4 @@ for file_name in sys.argv[1:]:
     writeVasp(file_name.replace('.cell', '.vasp'), 1.0, basis, elements,
               num_atoms, '', coordinate_type, coordinates, [])
 
-print('                  ----------------- Done -----------------')
+print('                  ----------------- Done -----------------\n')

@@ -30,7 +30,7 @@ done
 
 cd vaspfile/
 echo "                           vaspfile/ processing"
-dir2car.pl * > /dev/null
+dir2car.py * > /dev/null
 tar -cf ./POSITION.tar ./*.vasp
 rm *.vasp POSCAR* CONTCAR* 2> /dev/null
 tar -xf ./POSITION.tar
@@ -39,7 +39,7 @@ cd ..
 
 cd gvfile/
 echo "                             gvfile/ processing"
-vas2gv.pl * > /dev/null
+vas2gjf.py * > /dev/null
 tar -cf ./GVFILE.tar ./*.gjf
 rm *.gjf POSCAR* CONTCAR* 2> /dev/null
 tar -xf ./GVFILE.tar
@@ -58,12 +58,12 @@ for i in `seq -f '%02g' 0 $(($n+1))`
 do
     if [ -e POSCAR-$i ]
     then
-    vas2xyz.pl POSCAR-$i >/dev/null
+    vas2xyz.py POSCAR-$i >/dev/null
     cat POSCAR-$i.xyz >>POSmovie.xyz
     fi
     if [ -e CONTCAR-$i ]
     then
-    vas2xyz.pl CONTCAR-$i >/dev/null
+    vas2xyz.py CONTCAR-$i >/dev/null
     cat CONTCAR-$i.xyz >>CONmovie.xyz
     fi
 done

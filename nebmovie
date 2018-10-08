@@ -20,6 +20,6 @@ if [ -z $3 ];then
     exit
 fi
 
-moviecombine.pl *.xyz movie.xyz $@
-gzip movie.xyz
+xyzmerge.py *.xyz $@
+gzip merge.xyz
 rm *.xyz

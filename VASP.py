@@ -2,36 +2,26 @@ import re
 import subprocess
 # 注意：所有函数读取的坐标统一为笛卡尔坐标
 
-def read_total_atoms():
-    pipe = subprocess.Popen("sed -n '7p' POSCAR", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    (content, error) = (pipe.stdout.read().strip(), pipe.stderr.read())
-    if content != "":
-        space = re.compile(r'\s+')
-        content = space.split(content)
-        number = 0
-        for num in content:
-            number += int(num)
-        return number
 
-    if error != "":
-        print('')
-        print('POSCAR: No such file or incorrect')
-        number = input("please input the total number of atoms:")
-        return int(number)
+class CmdRrror(Exception):
+    def __init__(self, errorinfo):
+        super().__init__(self)  # 初始化父类
+        self.errorinfo = errorinfo
+
+    def __str__(self):
+        return 'Command Execution Error: ' + self.errorinfo
 
 
-def grep_outcar(command):
+def execCmd(command):
     pipe = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    (content, error) = (pipe.stdout.readlines(), pipe.stderr.read())
+    (content, error) = (pipe.stdout.readlines(), pipe.stderr.read().decode())
     if content:
+        for i in range(len(content)):
+            content[i] = content[i].decode()
         return content
 
     if error != "":
-        print('')
-        print('POSCAR: No such file')
-        print('')
-        exit(0)
-    return []
+        raise CmdRrror(error)
 
 
 # this function can only read file in VASP 5.0 or later
@@ -183,7 +173,7 @@ def readGjf(file_name):
     return elements[1:], num_atoms, coordinates
 
 
-def writeGif(file_name, elements, num_atoms, coordinates):
+def writeGjf(file_name, elements, num_atoms, coordinates):
     """
     :param file_name: str
     :param elements: [element1, element2, ...], str

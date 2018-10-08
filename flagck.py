@@ -17,14 +17,14 @@ if re.search(r'^[Ss]', content[7]) is None:
     print('')
     exit(1)
 
-print(1)
+print('')
 print("Atom_id                      Content")
 print("------------------------------------------")
 for i in range(9, len(content)):
     temp = pattern.split(content[i].strip())
 
     if len(temp) == 1:
-        exit(0)
+        exit(1)
 
     if len(temp) != 6:
         print("-----------")

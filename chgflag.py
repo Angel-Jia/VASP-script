@@ -18,7 +18,7 @@ if len(sys.argv) != 3 and len(sys.argv) != 4:
 flag = sys.argv[-2]
 if flag != 'T' and flag != 'F':
     print('')
-    print("error: unidentified flag %s" % flag)
+    print("Error: unidentified flag '%s'" % flag)
     print('')
     exit(1)
 
