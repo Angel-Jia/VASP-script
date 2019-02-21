@@ -2,6 +2,32 @@ import re
 import subprocess
 # 注意：所有函数读取的坐标统一为笛卡尔坐标
 
+def old_POSCAR(file_name):
+    """
+    :param file_name: str
+    check whether POSCAR is in old format(vasp 5.1-)
+    """
+    with open(file_name) as input_file:
+        content = input_file.readlines()
+    try:
+        float(content[6].strip().split()[0])    # 如果第7行是数字，则是新格式，即第6行为元素符号
+        return False
+    except ValueError:
+        pass
+    return True
+
+def convert_POSCAR(file_name):
+    """
+    :param file_name: str
+    convert old POSCAR to new one
+    """
+    with open(file_name) as input_file:
+        content = input_file.readlines()
+    content.insert(5,content[0])
+    poscar = ''.join(content)
+    input_file = open(file_name,'w')
+    input_file.write(poscar)
+    input_file.close()
 
 class CmdRrror(Exception):
     def __init__(self, errorinfo):
@@ -27,7 +53,7 @@ def execCmd(command):
 # this function can only read file in VASP 5.0 or later
 def readVasp(file_name):
     """
-    :param file_name:
+    :param file_name: str
     :return: [lattice, basis, elements, num_atoms, selectiveflag, coordinate_type, coordinates, selective]
     lattice: scale, float
     basis: [x1, y1, z1], [x2, y2, z2], [x3, y3, z3]], float
@@ -38,6 +64,8 @@ def readVasp(file_name):
     coordinates: [[x1, y1, z1], [x2, y2, z2], ...], float
     selective: [[T/F, T/F, T/F], [T/F, T/F, T/F], ...], str
     """
+    if old_POSCAR(file_name):
+        convert_POSCAR(file_name)
     space = re.compile(r'\s+')
     with open(file_name) as input_file:
         content = input_file.readlines()
@@ -101,6 +129,8 @@ def writeVasp(file_name, lattice, basis, elements, num_atoms, selectiveflag, coo
     :param selective: [[T/F, T/F, T/F], [T/F, T/F, T/F], ...] or [], str
     :return:
     """
+    if old_POSCAR(file_name):
+        convert_POSCAR(file_name)
     with open(file_name, 'w') as output_file:
         description = ' '.join(elements)
         output_file.write('%s\n' % description)
